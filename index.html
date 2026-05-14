@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobFit — Marketing & Strategy Ops</title>
+  <style>
+    :root {
+      --bg:            #FAF7F4;
+      --surface:       #FFFFFF;
+      --surface-warm:  #FEF4EB;
+      --accent:        #C4601E;
+      --accent-hover:  #A84E16;
+      --accent-light:  #F2D9C6;
+      --text-primary:  #271509;
+      --text-secondary:#6B4530;
+      --text-muted:    #A8876A;
+      --border:        #EBE0D4;
+      --border-light:  #F4EDE5;
+      --radius:        14px;
+      --radius-sm:     8px;
+      --shadow:        0 2px 14px rgba(60,25,5,0.07);
+      --shadow-hover:  0 6px 28px rgba(60,25,5,0.13);
+      --fit-high-bg:   #EDF6EF;
+      --fit-high-text: #27713F;
+      --fit-mid-bg:    #FEF3E6;
+      --fit-mid-text:  #B55918;
+      --fit-low-bg:    #FAECEC;
+      --fit-low-text:  #AB3434;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Aptos', 'Aptos Display', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 26px 44px 22px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+
+    .header-tagline {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+
+    .search-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 10px 16px 10px 38px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.875rem;
+      background: var(--bg);
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-input:focus { border-color: var(--accent); }
+
+    .location-wrap {
+      position: relative;
+      width: 180px;
+      flex-shrink: 0;
+    }
+
+    .location-icon {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent);
+      pointer-events: none;
+    }
+
+    .location-input {
+      width: 100%;
+      padding: 10px 32px 10px 36px;
+      border: 1.5px solid var(--accent-light);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.875rem;
+      background: var(--surface-warm);
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .location-input::placeholder { color: var(--text-muted); }
+    .location-input:focus { border-color: var(--accent); }
+
+    .location-clear {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1;
+      padding: 0 2px;
+      display: none;
+    }
+
+    .location-clear:hover { color: var(--accent); }
+
+    .filter-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 7px 16px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-family: inherit;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .chip:hover  { border-color: var(--accent); color: var(--accent); }
+    .chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    /* ── Main ── */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 44px;
+    }
+
+    .results-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .results-count {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+    }
+
+    .sort-select {
+      font-family: inherit;
+      font-size: 0.8rem;
+      padding: 6px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--text-secondary);
+      cursor: pointer;
+      outline: none;
+    }
+
+    /* ── Job Grid ── */
+    .job-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+    }
+
+    /* ── Job Card ── */
+    .job-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .job-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+      border-color: var(--accent-light);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .card-header { flex: 1; }
+
+    .job-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.35;
+      margin-bottom: 3px;
+    }
+
+    .job-company {
+      font-size: 0.855rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .fit-badge {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 13px;
+      border-radius: 10px;
+      min-width: 66px;
+      text-align: center;
+    }
+
+    .fit-badge.high { background: var(--fit-high-bg); color: var(--fit-high-text); }
+    .fit-badge.mid  { background: var(--fit-mid-bg);  color: var(--fit-mid-text);  }
+    .fit-badge.low  { background: var(--fit-low-bg);  color: var(--fit-low-text);  }
+
+    .fit-pct   { font-size: 1.3rem; font-weight: 700; line-height: 1; }
+    .fit-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; opacity: 0.75; }
+
+    /* ── Meta row ── */
+    .card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .meta-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+
+    .meta-tag svg { flex-shrink: 0; }
+
+    .exp-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.74rem;
+      color: var(--text-secondary);
+      background: var(--accent-light);
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-weight: 500;
+    }
+
+    /* ── Skills ── */
+    .skills-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      margin-bottom: 7px;
+    }
+
+    .skills-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .skill-chip {
+      font-size: 0.72rem;
+      padding: 3px 10px;
+      border-radius: 100px;
+      background: var(--surface-warm);
+      color: var(--accent);
+      border: 1px solid var(--accent-light);
+      font-weight: 500;
+    }
+
+    .no-skills { font-size: 0.8rem; color: var(--text-muted); font-style: italic; }
+
+    /* ── Description ── */
+    .desc-preview {
+      font-size: 0.815rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .desc-full {
+      font-size: 0.815rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      max-height: 280px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .desc-full::-webkit-scrollbar       { width: 4px; }
+    .desc-full::-webkit-scrollbar-track { background: transparent; }
+    .desc-full::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .expand-btn {
+      font-family: inherit;
+      font-size: 0.77rem;
+      color: var(--accent);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .expand-btn:hover { color: var(--accent-hover); }
+
+    /* ── Card footer ── */
+    .card-footer {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .source-badge {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      background: var(--bg);
+      padding: 3px 9px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .view-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+
+    .view-btn:hover { background: var(--accent-hover); }
+
+    /* ── Skeleton ── */
+    .skeleton-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+    }
+
+    .skeleton-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    @keyframes shimmer {
+      0%   { background-position: -600px 0; }
+      100% { background-position:  600px 0; }
+    }
+
+    .skel {
+      background: linear-gradient(90deg,
+        var(--border-light) 25%,
+        var(--surface-warm) 50%,
+        var(--border-light) 75%
+      );
+      background-size: 600px 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 6px;
+    }
+
+    .skel-sm { height: 13px; }
+    .skel-md { height: 18px; }
+    .skel-lg { height: 24px; }
+
+    /* ── States ── */
+    .error-banner {
+      background: #FEF3E6;
+      border: 1px solid var(--accent-light);
+      border-radius: var(--radius-sm);
+      padding: 13px 18px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-state h3 { font-size: 1.05rem; margin-bottom: 8px; color: var(--text-secondary); }
+    .empty-state p  { font-size: 0.875rem; }
+
+    /* ── Setup banner ── */
+    .setup-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      background: var(--surface-warm);
+      border: 1.5px solid var(--accent-light);
+      border-radius: var(--radius-sm);
+      padding: 13px 16px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-bottom: 22px;
+      line-height: 1.6;
+    }
+
+    .setup-banner-body { flex: 1; }
+
+    .setup-links {
+      display: inline-flex;
+      gap: 10px;
+      margin: 0 6px;
+    }
+
+    .setup-links a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      white-space: nowrap;
+    }
+
+    .setup-links a:hover { color: var(--accent-hover); }
+
+    .setup-banner code {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.78rem;
+      background: var(--accent-light);
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: var(--accent);
+    }
+
+    .setup-dismiss {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      line-height: 1;
+      padding: 0;
+      flex-shrink: 0;
+    }
+
+    .setup-dismiss:hover { color: var(--accent); }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 36px 44px;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      line-height: 1.8;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .header, .main, .footer { padding-left: 20px; padding-right: 20px; }
+      .job-grid, .skeleton-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-top">
+    <h1>JobFit</h1>
+    <span class="header-tagline">Marketing &amp; Strategy Ops</span>
+  </div>
+  <div class="search-row">
+    <div class="search-wrap">
+      <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" class="search-input" id="searchInput"
+             placeholder="Search by title, company, or skill…">
+    </div>
+    <div class="location-wrap">
+      <svg class="location-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
+      </svg>
+      <input type="text" class="location-input" id="locationInput"
+             placeholder="Location…" value="Singapore">
+      <button class="location-clear" id="locationClear" title="Clear location">&#215;</button>
+    </div>
+    <div class="filter-chips" id="filterChips">
+      <button class="chip active" data-filter="all">All</button>
+      <button class="chip" data-filter="remote">Remote</button>
+      <button class="chip" data-filter="operations">Ops</button>
+      <button class="chip" data-filter="strategy">Strategy</button>
+      <button class="chip" data-filter="analytics">Analytics</button>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  <div id="errorBanner" class="error-banner" style="display:none;"></div>
+  <div id="setupBanner" class="setup-banner" style="display:none;">
+    <div class="setup-banner-body">
+      <strong>Unlock more jobs from Google Jobs &amp; Adzuna SG</strong> — two free API keys needed.
+      <span class="setup-links">
+        <a href="https://rapidapi.com/letscrape-6bRBa3QguO5/api/jsearch" target="_blank" rel="noopener">Get JSearch key</a>
+        <a href="https://developer.adzuna.com" target="_blank" rel="noopener">Get Adzuna key</a>
+      </span>
+      Then paste them into the <code>CONFIG</code> block at the top of <code>index.html</code>.
+    </div>
+    <button class="setup-dismiss" onclick="document.getElementById('setupBanner').style.display='none'">&#215;</button>
+  </div>
+
+  <div class="results-bar">
+    <span class="results-count" id="resultsCount">Loading jobs…</span>
+    <select class="sort-select" id="sortSelect">
+      <option value="fit">Sort: Best Fit</option>
+      <option value="title">Sort: Title A–Z</option>
+      <option value="company">Sort: Company A–Z</option>
+    </select>
+  </div>
+
+  <div id="skeletonGrid" class="skeleton-grid"></div>
+  <div id="jobGrid"     class="job-grid" style="display:none;"></div>
+  <div id="emptyState"  class="empty-state" style="display:none;">
+    <h3>No results found</h3>
+    <p>Try different keywords or clear your filters.</p>
+  </div>
+</main>
+
+<footer class="footer">
+  Jobs sourced from MyCareersFuture, The Muse &amp; Remotive &nbsp;·&nbsp;
+  Fit score reflects your profile as a 0–2 yr generalist in analytics, ops &amp; strategy &nbsp;·&nbsp;
+  Data refreshes each session
+</footer>
+
+<script>
+// ─────────────────────────────────────────────────────────────────
+//  API KEYS — paste your keys here after signing up (both are free)
+// ─────────────────────────────────────────────────────────────────
+const CONFIG = {
+  jsearchKey:  'YOUR_RAPIDAPI_KEY',   // rapidapi.com → search "JSearch" → subscribe free
+  adzunaAppId: 'YOUR_ADZUNA_APP_ID',  // developer.adzuna.com → register → My Apps
+  adzunaKey:   'YOUR_ADZUNA_KEY',
+};
+
+// ─────────────────────────────────────────────────────────────────
+//  USER PROFILE  — update this once you share your full background
+// ─────────────────────────────────────────────────────────────────
+const USER_PROFILE = {
+  yearsExp: 1,
+  skills: [
+    // Marketing ops
+    'marketing operations', 'marketing ops', 'marketing automation',
+    'revenue operations', 'revops', 'demand generation', 'demand gen',
+    'campaign operations', 'campaign management', 'email marketing',
+    'lead generation', 'lead nurturing', 'pipeline management',
+    'hubspot', 'salesforce', 'marketo', 'pardot', 'eloqua',
+    'crm', 'marketing technology', 'martech', 'attribution',
+    // Analytics & data
+    'analytics', 'data analysis', 'sql', 'reporting', 'dashboard',
+    'metrics', 'kpi', 'google analytics', 'ga4', 'tableau',
+    'looker', 'data studio', 'excel', 'google sheets', 'python',
+    // Strategy
+    'strategy', 'go-to-market', 'gtm', 'market research',
+    'competitive analysis', 'competitive intelligence', 'business operations',
+    'biz ops', 'strategic planning', 'financial modeling',
+    'powerpoint', 'slides', 'stakeholder', 'cross-functional',
+    // General ops
+    'project management', 'process improvement', 'workflow', 'asana', 'notion',
+    'growth', 'performance marketing', 'seo', 'content strategy',
+    'a/b testing', 'experimentation', 'segmentation',
+  ],
+  targetTitles: [
+    'operations', 'ops', 'strategy', 'analyst', 'analytics',
+    'coordinator', 'specialist', 'associate', 'manager',
+    'planner', 'growth', 'insights', 'performance',
+  ],
+};
+
+// ─────────────────────────────────────────────────────────────────
+//  FIT SCORING
+// ─────────────────────────────────────────────────────────────────
+function stripHtml(html) {
+  return html
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&#\d+;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function extractYearsExp(text) {
+  const lower = text.toLowerCase();
+  const pats = [
+    /(\d+)\+?\s*(?:to\s*\d+\s*)?years?\s*(?:of\s*)?(?:relevant\s*)?(?:experience|exp)/i,
+    /(\d+)\+?\s*yrs?\s*(?:of\s*)?(?:experience|exp)/i,
+    /minimum\s+(?:of\s+)?(\d+)\s+years?/i,
+    /at\s+least\s+(\d+)\s+years?/i,
+    /(\d+)\s*[-–]\s*\d+\s*years?\s*(?:of\s*)?experience/i,
+  ];
+  for (const p of pats) {
+    const m = lower.match(p);
+    if (m) return parseInt(m[1]);
+  }
+  return null;
+}
+
+function calculateFit(job) {
+  const corpus = (job.title + ' ' + job.descriptionText).toLowerCase();
+
+  // For MCF jobs, blend structured skills with keyword scan
+  const mcfSkillHits = job.mcfSkills
+    ? USER_PROFILE.skills.filter(s => job.mcfSkills.includes(s))
+    : [];
+
+  // Skill match — up to 65 pts
+  const corpusMatched = USER_PROFILE.skills.filter(s => corpus.includes(s));
+  const allMatched    = [...new Set([...mcfSkillHits, ...corpusMatched])];
+  const skillScore    = Math.min(65, (allMatched.length / 7) * 65);
+
+  // Title alignment — up to 20 pts
+  const titleLower = job.title.toLowerCase();
+  const titleHit   = USER_PROFILE.targetTitles.some(t => titleLower.includes(t));
+  const titleScore = titleHit ? 20 : 5;
+
+  // Experience fit — up to 15 pts (prefer MCF's structured field)
+  const reqYrs = job.minimumYearsExperience ?? extractYearsExp(corpus);
+  let expScore = 10;
+  if (reqYrs !== null) {
+    if      (reqYrs <= 1) expScore = 15;
+    else if (reqYrs <= 2) expScore = 13;
+    else if (reqYrs <= 3) expScore = 8;
+    else if (reqYrs <= 5) expScore = 3;
+    else                  expScore = 0;
+  }
+
+  return {
+    score:         Math.round(Math.min(100, Math.max(5, skillScore + titleScore + expScore))),
+    matchedSkills: allMatched.slice(0, 6),
+    yearsRequired: reqYrs,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  DATA FETCHING
+// ─────────────────────────────────────────────────────────────────
+async function fetchMuseJobs() {
+  const jobs = [];
+  try {
+    const pages = await Promise.all(
+      [1, 2, 3].map(p =>
+        fetch(`https://www.themuse.com/api/public/jobs?category=Marketing&page=${p}`)
+          .then(r => r.json())
+      )
+    );
+    for (const data of pages) {
+      for (const j of (data.results || [])) {
+        const raw  = j.contents || '';
+        const text = stripHtml(raw);
+        jobs.push({
+          id:              'muse_' + j.id,
+          title:           j.name || 'Untitled',
+          company:         j.company?.name || 'Unknown',
+          location:        (j.locations || []).map(l => l.name).join(', ') || 'Not specified',
+          url:             j.refs?.landing_page || '#',
+          descriptionText: text,
+          type:            j.type || 'Full-time',
+          level:           (j.levels || []).map(l => l.name).join(', ') || '',
+          source:          'The Muse',
+          isRemote:        (j.locations || []).some(l =>
+                             l.name?.toLowerCase().includes('remote')) ||
+                           text.toLowerCase().includes('remote'),
+        });
+      }
+    }
+  } catch (e) {
+    console.warn('The Muse fetch failed:', e);
+  }
+  return jobs;
+}
+
+async function fetchRemotiveJobs() {
+  const jobs = [];
+  try {
+    const [mkt, biz] = await Promise.all([
+      fetch('https://remotive.com/api/remote-jobs?category=marketing&limit=60').then(r => r.json()),
+      fetch('https://remotive.com/api/remote-jobs?category=business&limit=40').then(r => r.json()),
+    ]);
+    for (const j of [...(mkt.jobs || []), ...(biz.jobs || [])]) {
+      const text = stripHtml(j.description || '');
+      jobs.push({
+        id:              'rem_' + j.id,
+        title:           j.title || 'Untitled',
+        company:         j.company_name || 'Unknown',
+        location:        j.candidate_required_location || 'Worldwide',
+        url:             j.url || '#',
+        descriptionText: text,
+        type:            j.job_type || 'Full-time',
+        level:           '',
+        source:          'Remotive',
+        isRemote:        true,
+      });
+    }
+  } catch (e) {
+    console.warn('Remotive fetch failed:', e);
+  }
+  return jobs;
+}
+
+async function fetchMCFJobs() {
+  const jobs = [];
+  const searches = [
+    'marketing operations', 'marketing strategy', 'business operations',
+    'growth analytics', 'revenue operations', 'campaign manager',
+  ];
+  try {
+    const results = await Promise.all(
+      searches.map(q =>
+        fetch(`https://api.mycareersfuture.gov.sg/v2/jobs?search=${encodeURIComponent(q)}&limit=20&page=0`)
+          .then(r => r.json())
+      )
+    );
+    const seen = new Set();
+    for (const data of results) {
+      for (const j of (data.results || [])) {
+        if (seen.has(j.uuid)) continue;
+        seen.add(j.uuid);
+        const text = stripHtml(j.description || '');
+        const minYrs = j.minimumYearsExperience ?? null;
+        const maxYrs = j.maximumYearsExperience ?? null;
+        const expLabel = minYrs !== null
+          ? (maxYrs && maxYrs !== minYrs ? `${minYrs}–${maxYrs}` : `${minYrs}`) + ' yrs'
+          : null;
+        jobs.push({
+          id:              'mcf_' + j.uuid,
+          title:           j.title || 'Untitled',
+          company:         j.postedCompany?.name || j.company?.name || 'Unknown',
+          location:        'Singapore',
+          url:             `https://www.mycareersfuture.gov.sg/job/${j.uuid}`,
+          descriptionText: text,
+          type:            j.employmentTypes?.[0]?.employmentType || 'Full-time',
+          level:           j.positionLevels?.map(p => p.position).join(', ') || '',
+          source:          'MyCareersFuture',
+          isRemote:        text.toLowerCase().includes('remote') || text.toLowerCase().includes('work from home'),
+          mcfExpLabel:     expLabel,
+          mcfSkills:       (j.skills || []).map(s => s.skill?.toLowerCase()).filter(Boolean),
+        });
+      }
+    }
+  } catch (e) {
+    console.warn('MyCareersFuture fetch failed:', e);
+  }
+  return jobs;
+}
+
+async function fetchJSearchJobs() {
+  const jobs = [];
+  if (CONFIG.jsearchKey === 'YOUR_RAPIDAPI_KEY') return jobs;
+  const queries = [
+    'marketing operations singapore',
+    'strategy operations singapore',
+    'marketing analytics singapore',
+  ];
+  try {
+    const results = await Promise.all(
+      queries.map(q =>
+        fetch(`https://jsearch.p.rapidapi.com/search?query=${encodeURIComponent(q)}&page=1&num_pages=2`, {
+          headers: {
+            'X-RapidAPI-Key':  CONFIG.jsearchKey,
+            'X-RapidAPI-Host': 'jsearch.p.rapidapi.com',
+          },
+        }).then(r => r.json())
+      )
+    );
+    const seen = new Set();
+    for (const data of results) {
+      for (const j of (data.data || [])) {
+        if (seen.has(j.job_id)) continue;
+        seen.add(j.job_id);
+        const text = stripHtml(j.job_description || '');
+        const reqMonths = j.job_required_experience?.required_experience_in_months ?? null;
+        const reqYrs = reqMonths !== null ? Math.round(reqMonths / 12) : null;
+        jobs.push({
+          id:              'js_' + j.job_id,
+          title:           j.job_title || 'Untitled',
+          company:         j.employer_name || 'Unknown',
+          location:        [j.job_city, j.job_country].filter(Boolean).join(', ') || 'Not specified',
+          url:             j.job_apply_link || j.job_google_link || '#',
+          descriptionText: text,
+          type:            j.job_employment_type || 'Full-time',
+          level:           '',
+          source:          'Google Jobs',
+          isRemote:        j.job_is_remote || false,
+          mcfExpLabel:     reqYrs !== null ? `${reqYrs}+ yrs` : null,
+          mcfSkills:       null,
+        });
+      }
+    }
+  } catch (e) {
+    console.warn('JSearch fetch failed:', e);
+  }
+  return jobs;
+}
+
+async function fetchAdzunaJobs() {
+  const jobs = [];
+  if (CONFIG.adzunaAppId === 'YOUR_ADZUNA_APP_ID') return jobs;
+  const queries = ['marketing operations', 'business strategy', 'growth analytics'];
+  try {
+    const results = await Promise.all(
+      queries.map(q =>
+        fetch(`https://api.adzuna.com/v1/api/jobs/sg/search/1?app_id=${CONFIG.adzunaAppId}&app_key=${CONFIG.adzunaKey}&what=${encodeURIComponent(q)}&results_per_page=30&content-type=application/json`)
+          .then(r => r.json())
+      )
+    );
+    const seen = new Set();
+    for (const data of results) {
+      for (const j of (data.results || [])) {
+        if (seen.has(j.id)) continue;
+        seen.add(j.id);
+        const text = stripHtml(j.description || '');
+        jobs.push({
+          id:              'adz_' + j.id,
+          title:           j.title || 'Untitled',
+          company:         j.company?.display_name || 'Unknown',
+          location:        j.location?.display_name || 'Singapore',
+          url:             j.redirect_url || '#',
+          descriptionText: text,
+          type:            j.contract_time === 'full_time' ? 'Full-time' : j.contract_time || 'Full-time',
+          level:           j.category?.label || '',
+          source:          'Adzuna SG',
+          isRemote:        text.toLowerCase().includes('remote'),
+          mcfExpLabel:     null,
+          mcfSkills:       null,
+        });
+      }
+    }
+  } catch (e) {
+    console.warn('Adzuna fetch failed:', e);
+  }
+  return jobs;
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  RENDER HELPERS
+// ─────────────────────────────────────────────────────────────────
+function esc(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function fitClass(s) { return s >= 70 ? 'high' : s >= 40 ? 'mid' : 'low'; }
+function fitWord(s)  { return s >= 70 ? 'Great fit' : s >= 40 ? 'Possible' : 'Stretch'; }
+
+function skeletonCard() {
+  return `
+  <div class="skeleton-card">
+    <div style="display:flex;gap:14px;justify-content:space-between">
+      <div style="flex:1;display:flex;flex-direction:column;gap:9px">
+        <div class="skel skel-lg" style="width:75%"></div>
+        <div class="skel skel-sm" style="width:45%"></div>
+      </div>
+      <div class="skel" style="width:66px;height:66px;border-radius:10px;flex-shrink:0"></div>
+    </div>
+    <div style="display:flex;gap:8px">
+      ${[90,70,80].map(w=>`<div class="skel skel-sm" style="width:${w}px;border-radius:100px"></div>`).join('')}
+    </div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap">
+      ${[82,96,74,88].map(w=>`<div class="skel skel-sm" style="width:${w}px;border-radius:100px"></div>`).join('')}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:7px">
+      <div class="skel skel-sm" style="width:100%"></div>
+      <div class="skel skel-sm" style="width:92%"></div>
+      <div class="skel skel-sm" style="width:78%"></div>
+    </div>
+  </div>`;
+}
+
+function jobCard(job) {
+  const fit     = job._fit;
+  const cls     = fitClass(fit.score);
+  const expTxt  = job.mcfExpLabel
+    ? `${job.mcfExpLabel} exp`
+    : fit.yearsRequired !== null ? `${fit.yearsRequired}+ yrs exp` : 'Exp not listed';
+  const preview = job.descriptionText.slice(0, 240) + (job.descriptionText.length > 240 ? '…' : '');
+  const full    = job.descriptionText.slice(0, 1800);
+
+  const locIcon = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
+  </svg>`;
+  const remIcon = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+  </svg>`;
+  const expIcon = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+  </svg>`;
+
+  return `
+  <div class="job-card" id="card_${esc(job.id)}">
+    <div class="card-top">
+      <div class="card-header">
+        <div class="job-title">${esc(job.title)}</div>
+        <div class="job-company">${esc(job.company)}</div>
+      </div>
+      <div class="fit-badge ${cls}">
+        <span class="fit-pct">${fit.score}%</span>
+        <span class="fit-label">${fitWord(fit.score)}</span>
+      </div>
+    </div>
+
+    <div class="card-meta">
+      ${job.location ? `<span class="meta-tag">${locIcon} ${esc(job.location)}</span>` : ''}
+      ${job.isRemote ? `<span class="meta-tag">${remIcon} Remote</span>` : ''}
+      ${job.type     ? `<span class="meta-tag">${esc(job.type)}</span>` : ''}
+      <span class="exp-tag">${expIcon} ${esc(expTxt)}</span>
+    </div>
+
+    <div>
+      <div class="skills-label">Matched skills</div>
+      <div class="skills-chips">
+        ${fit.matchedSkills.length > 0
+          ? fit.matchedSkills.map(s => `<span class="skill-chip">${esc(s)}</span>`).join('')
+          : '<span class="no-skills">No direct skill matches</span>'
+        }
+      </div>
+    </div>
+
+    <div>
+      <div class="desc-preview" id="prev_${esc(job.id)}">${esc(preview)}</div>
+      <div class="desc-full"    id="full_${esc(job.id)}" style="display:none">${esc(full)}</div>
+      <button class="expand-btn" onclick="toggleDesc('${esc(job.id)}')">Show more</button>
+    </div>
+
+    <div class="card-footer">
+      <span class="source-badge">${esc(job.source)}</span>
+      <a href="${esc(job.url)}" target="_blank" rel="noopener noreferrer" class="view-btn">
+        View posting
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+      </a>
+    </div>
+  </div>`;
+}
+
+function toggleDesc(id) {
+  const prev = document.getElementById('prev_' + id);
+  const full = document.getElementById('full_' + id);
+  const btn  = prev.parentElement.querySelector('.expand-btn');
+  const open = full.style.display === 'none';
+  prev.style.display = open ? 'none' : '';
+  full.style.display = open ? ''     : 'none';
+  btn.textContent    = open ? 'Show less' : 'Show more';
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  STATE & FILTERING
+// ─────────────────────────────────────────────────────────────────
+let allJobs      = [];
+let activeFilter = 'all';
+let searchQuery  = '';
+let locationQuery = 'singapore';
+let sortMode     = 'fit';
+
+function filterAndRender() {
+  const grid     = document.getElementById('jobGrid');
+  const empty    = document.getElementById('emptyState');
+  const countEl  = document.getElementById('resultsCount');
+
+  let jobs = [...allJobs];
+
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    jobs = jobs.filter(j =>
+      j.title.toLowerCase().includes(q) ||
+      j.company.toLowerCase().includes(q) ||
+      j.descriptionText.toLowerCase().includes(q)
+    );
+  }
+
+  if (locationQuery) {
+    const loc = locationQuery.toLowerCase();
+    jobs = jobs.filter(j =>
+      j.location.toLowerCase().includes(loc) ||
+      j.descriptionText.toLowerCase().includes(loc)
+    );
+  }
+
+  if (activeFilter !== 'all') {
+    if (activeFilter === 'remote') {
+      jobs = jobs.filter(j => j.isRemote);
+    } else {
+      const f = activeFilter.toLowerCase();
+      jobs = jobs.filter(j =>
+        j.title.toLowerCase().includes(f) ||
+        j.descriptionText.toLowerCase().includes(f)
+      );
+    }
+  }
+
+  if      (sortMode === 'fit')     jobs.sort((a,b) => b._fit.score - a._fit.score);
+  else if (sortMode === 'title')   jobs.sort((a,b) => a.title.localeCompare(b.title));
+  else if (sortMode === 'company') jobs.sort((a,b) => a.company.localeCompare(b.company));
+
+  document.getElementById('skeletonGrid').style.display = 'none';
+  grid.style.display = '';
+
+  if (jobs.length === 0) {
+    grid.style.display  = 'none';
+    empty.style.display = '';
+    countEl.textContent = '0 results';
+    return;
+  }
+
+  empty.style.display = 'none';
+  countEl.textContent = `${jobs.length} job${jobs.length !== 1 ? 's' : ''} found`;
+  grid.innerHTML = jobs.map(jobCard).join('');
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────────────────────────
+async function init() {
+  // Show skeletons
+  document.getElementById('skeletonGrid').innerHTML =
+    Array.from({length: 6}, skeletonCard).join('');
+
+  const [museJobs, remJobs, mcfJobs, jsearchJobs, adzunaJobs] = await Promise.all([
+    fetchMuseJobs(), fetchRemotiveJobs(), fetchMCFJobs(), fetchJSearchJobs(), fetchAdzunaJobs(),
+  ]);
+  let combined = [...museJobs, ...remJobs, ...mcfJobs, ...jsearchJobs, ...adzunaJobs];
+
+  if (combined.length === 0) {
+    const banner = document.getElementById('errorBanner');
+    banner.style.display = '';
+    banner.innerHTML = `
+      <strong>Could not load live jobs.</strong> This usually means CORS is blocking requests
+      from <code>file://</code> URLs.<br>
+      Fix: open a terminal in this folder and run <code>npx serve .</code>,
+      then visit <code>http://localhost:3000</code> — or use the VS Code Live Server extension.
+    `;
+    document.getElementById('skeletonGrid').style.display = 'none';
+    document.getElementById('resultsCount').textContent = '0 results';
+    return;
+  }
+
+  // Deduplicate by title + company
+  const seen = new Set();
+  combined = combined.filter(j => {
+    const key = (j.title + '|' + j.company).toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  // Score every job
+  for (const job of combined) {
+    job._fit = calculateFit(job);
+  }
+
+  allJobs = combined;
+  filterAndRender();
+}
+
+// ── Event listeners ──
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQuery = e.target.value.trim();
+  filterAndRender();
+});
+
+document.getElementById('filterChips').addEventListener('click', e => {
+  const btn = e.target.closest('.chip');
+  if (!btn) return;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = btn.dataset.filter;
+  filterAndRender();
+});
+
+document.getElementById('sortSelect').addEventListener('change', e => {
+  sortMode = e.target.value;
+  filterAndRender();
+});
+
+const locationInput = document.getElementById('locationInput');
+const locationClear = document.getElementById('locationClear');
+
+function updateLocationClear() {
+  locationClear.style.display = locationInput.value ? '' : 'none';
+}
+
+locationInput.addEventListener('input', e => {
+  locationQuery = e.target.value.trim().toLowerCase();
+  updateLocationClear();
+  filterAndRender();
+});
+
+locationClear.addEventListener('click', () => {
+  locationInput.value = '';
+  locationQuery = '';
+  updateLocationClear();
+  filterAndRender();
+});
+
+updateLocationClear();
+
+init();
+
+// Show setup banner if any key is still a placeholder
+if (CONFIG.jsearchKey === 'YOUR_RAPIDAPI_KEY' || CONFIG.adzunaAppId === 'YOUR_ADZUNA_APP_ID') {
+  document.getElementById('setupBanner').style.display = '';
+}
+</script>
+</body>
+</html>
