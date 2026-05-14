@@ -606,7 +606,7 @@
 
 <footer class="footer">
   Jobs sourced from MyCareersFuture, The Muse &amp; Remotive &nbsp;·&nbsp;
-  Fit score reflects your profile as a 0–2 yr generalist in analytics, ops &amp; strategy &nbsp;·&nbsp;
+  Fit score calibrated to Nellie's profile — 2 yrs, SQL/analytics/B2B marketing, targeting growth &amp; strategy roles &nbsp;·&nbsp;
   Data refreshes each session
 </footer>
 
@@ -621,36 +621,50 @@ const CONFIG = {
 };
 
 // ─────────────────────────────────────────────────────────────────
-//  USER PROFILE  — update this once you share your full background
+//  USER PROFILE  — Nellie Lim · Product Marketing Analyst · ~2 yrs
 // ─────────────────────────────────────────────────────────────────
 const USER_PROFILE = {
-  yearsExp: 1,
+  yearsExp: 2,
   skills: [
-    // Marketing ops
-    'marketing operations', 'marketing ops', 'marketing automation',
-    'revenue operations', 'revops', 'demand generation', 'demand gen',
-    'campaign operations', 'campaign management', 'email marketing',
-    'lead generation', 'lead nurturing', 'pipeline management',
-    'hubspot', 'salesforce', 'marketo', 'pardot', 'eloqua',
-    'crm', 'marketing technology', 'martech', 'attribution',
-    // Analytics & data
-    'analytics', 'data analysis', 'sql', 'reporting', 'dashboard',
-    'metrics', 'kpi', 'google analytics', 'ga4', 'tableau',
-    'looker', 'data studio', 'excel', 'google sheets', 'python',
-    // Strategy
-    'strategy', 'go-to-market', 'gtm', 'market research',
-    'competitive analysis', 'competitive intelligence', 'business operations',
-    'biz ops', 'strategic planning', 'financial modeling',
-    'powerpoint', 'slides', 'stakeholder', 'cross-functional',
-    // General ops
-    'project management', 'process improvement', 'workflow', 'asana', 'notion',
-    'growth', 'performance marketing', 'seo', 'content strategy',
-    'a/b testing', 'experimentation', 'segmentation',
+    // Data & analytics (core strength)
+    'sql', 'excel', 'power bi', 'power query', 'adobe analytics', 'domo',
+    'data analysis', 'data visualization', 'dashboard', 'reporting',
+    'business analytics', 'performance tracking', 'funnel analysis',
+    'kpi', 'metrics', 'a/b testing', 'experiment design', 'experimentation',
+    'commercial analysis', 'business performance',
+    // Marketing & campaign
+    'marketing analytics', 'marketing operations', 'marketing ops',
+    'demand generation', 'campaign execution', 'campaign management',
+    'b2b marketing', 'go-to-market', 'gtm', 'sales enablement',
+    'market research', 'competitive analysis', 'competitive intelligence',
+    'customer insights', 'content strategy', 'email marketing',
+    'crm', 'pardot', 'marketing automation', 'digital marketing',
+    'social media', 'multi-channel', 'ecommerce', 'e-commerce',
+    'performance marketing', 'growth marketing',
+    // Strategy & ops
+    'strategy', 'growth strategy', 'business strategy', 'strategic planning',
+    'cross-functional', 'stakeholder management', 'project management',
+    'revenue growth', 'market analysis', 'insights', 'process improvement',
+    'commercial', 'business operations', 'biz ops', 'revenue operations',
+    // Tools & platforms
+    'microsoft copilot', 'ai tools', 'powerpoint', 'google sheets',
   ],
   targetTitles: [
-    'operations', 'ops', 'strategy', 'analyst', 'analytics',
-    'coordinator', 'specialist', 'associate', 'manager',
-    'planner', 'growth', 'insights', 'performance',
+    'marketing', 'strategy', 'growth', 'analyst', 'analytics',
+    'associate', 'specialist', 'executive', 'operations', 'ops',
+    'insights', 'commercial', 'performance', 'go-to-market',
+  ],
+  // Roles/industries that get a score boost
+  boostKeywords: [
+    'tech', 'technology', 'saas', 'startup', 'fintech', 'platform',
+    'ecommerce', 'e-commerce', 'digital', 'high-growth', 'hypergrowth',
+    'data-driven', 'analytical', 'growth', 'strategic', 'apac', 'regional',
+    'consumer', 'fmcg', 'retail', 'marketplace',
+  ],
+  // Roles that get a penalty (deal-breakers)
+  dealBreakerKeywords: [
+    'logistics', 'supply chain', 'freight', 'shipping', 'warehouse',
+    'manufacturing', 'heavy industry', 'oil and gas', 'oil & gas',
   ],
 };
 
@@ -693,29 +707,37 @@ function calculateFit(job) {
     ? USER_PROFILE.skills.filter(s => job.mcfSkills.includes(s))
     : [];
 
-  // Skill match — up to 65 pts
+  // Skill match — up to 55 pts
   const corpusMatched = USER_PROFILE.skills.filter(s => corpus.includes(s));
   const allMatched    = [...new Set([...mcfSkillHits, ...corpusMatched])];
-  const skillScore    = Math.min(65, (allMatched.length / 7) * 65);
+  const skillScore    = Math.min(55, (allMatched.length / 6) * 55);
 
-  // Title alignment — up to 20 pts
+  // Title alignment — up to 15 pts
   const titleLower = job.title.toLowerCase();
   const titleHit   = USER_PROFILE.targetTitles.some(t => titleLower.includes(t));
-  const titleScore = titleHit ? 20 : 5;
+  const titleScore = titleHit ? 15 : 3;
 
-  // Experience fit — up to 15 pts (prefer MCF's structured field)
+  // Experience fit — up to 10 pts (Nellie has ~2 yrs; sweet spot is 1–4 yr roles)
   const reqYrs = job.minimumYearsExperience ?? extractYearsExp(corpus);
-  let expScore = 10;
+  let expScore = 8; // default when not listed
   if (reqYrs !== null) {
-    if      (reqYrs <= 1) expScore = 15;
-    else if (reqYrs <= 2) expScore = 13;
-    else if (reqYrs <= 3) expScore = 8;
-    else if (reqYrs <= 5) expScore = 3;
+    if      (reqYrs <= 2) expScore = 10;
+    else if (reqYrs <= 4) expScore = 8;
+    else if (reqYrs <= 6) expScore = 3;
     else                  expScore = 0;
   }
 
+  // Industry boost — up to 15 pts (tech/ecommerce/high-growth preferred)
+  const boostHits  = USER_PROFILE.boostKeywords.filter(k => corpus.includes(k));
+  const boostScore = Math.min(15, boostHits.length * 4);
+
+  // Deal-breaker penalty (logistics/supply chain/heavy industry)
+  const hasDealBreaker = USER_PROFILE.dealBreakerKeywords.some(k => corpus.includes(k));
+  const penalty = hasDealBreaker ? 25 : 0;
+
+  const raw = skillScore + titleScore + expScore + boostScore - penalty;
   return {
-    score:         Math.round(Math.min(100, Math.max(5, skillScore + titleScore + expScore))),
+    score:         Math.round(Math.min(100, Math.max(5, raw))),
     matchedSkills: allMatched.slice(0, 6),
     yearsRequired: reqYrs,
   };
