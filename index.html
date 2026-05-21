@@ -195,6 +195,16 @@
       color: var(--text-muted);
     }
 
+    .source-status {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-left: 10px;
+    }
+
+    .source-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 3px; vertical-align: middle; }
+    .source-dot.ok  { background: var(--fit-high-text); }
+    .source-dot.err { background: var(--fit-low-text); }
+
     .sort-select {
       font-family: inherit;
       font-size: 0.8rem;
@@ -588,7 +598,10 @@
   </div>
 
   <div class="results-bar">
-    <span class="results-count" id="resultsCount">Loading jobs…</span>
+    <div>
+      <span class="results-count" id="resultsCount">Loading jobs…</span>
+      <span class="source-status" id="sourceStatus"></span>
+    </div>
     <select class="sort-select" id="sortSelect">
       <option value="fit">Sort: Best Fit</option>
       <option value="title">Sort: Title A–Z</option>
@@ -886,7 +899,7 @@ async function fetchJSearchJobs() {
           id:              'js_' + j.job_id,
           title:           j.job_title || 'Untitled',
           company:         j.employer_name || 'Unknown',
-          location:        [j.job_city, j.job_country].filter(Boolean).join(', ') || 'Not specified',
+          location:        (j.job_city || j.job_country === 'SG' ? 'Singapore' : j.job_country) || 'Not specified',
           url:             j.job_apply_link || j.job_google_link || '#',
           descriptionText: text,
           type:            j.job_employment_type || 'Full-time',
@@ -1138,6 +1151,18 @@ async function init() {
     fetchMuseJobs(), fetchRemotiveJobs(), fetchMCFJobs(), fetchJSearchJobs(), fetchAdzunaJobs(),
   ]);
   let combined = [...museJobs, ...remJobs, ...mcfJobs, ...jsearchJobs, ...adzunaJobs];
+
+  // Source status bar
+  const sources = [
+    { name: 'MCF', count: mcfJobs.length },
+    { name: 'Adzuna', count: adzunaJobs.length },
+    { name: 'Google Jobs', count: jsearchJobs.length },
+    { name: 'The Muse', count: museJobs.length },
+    { name: 'Remotive', count: remJobs.length },
+  ];
+  document.getElementById('sourceStatus').innerHTML =
+    sources.map(s => `<span class="source-dot ${s.count > 0 ? 'ok' : 'err'}"></span>${s.name}: ${s.count}`).join(' &nbsp;·&nbsp; ');
+  console.table(sources);
 
   if (combined.length === 0) {
     const banner = document.getElementById('errorBanner');
