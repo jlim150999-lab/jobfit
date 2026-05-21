@@ -790,11 +790,31 @@ function calculateFit(job) {
   const stratHits = strategySignals.filter(s => corpus.includes(s)).length;
   const executionPenalty = (execHits >= 2 && stratHits === 0) ? 10 : 0;
 
+  // Location penalty — East, North, North-East Singapore (−10 pts)
+  // Checks job.location first; falls back to "based in / located in / office in / office at" patterns in description
+  const eastAreas     = ['tampines', 'changi', 'pasir ris', 'bedok', 'upper east coast',
+                         'paya lebar', 'katong', 'marine parade', 'geylang', 'ubi',
+                         'kembangan', 'eunos', 'simei', 'tanah merah', 'expo', 'loyang'];
+  const northAreas    = ['woodlands', 'yishun', 'sembawang', 'admiralty', 'mandai',
+                         'marsiling', 'kranji', 'khatib', 'canberra'];
+  const northEastAreas = ['sengkang', 'punggol', 'hougang', 'serangoon',
+                          'buangkok', 'kovan', 'lorong chuan', 'ang mo kio'];
+  const allFringeAreas = [...eastAreas, ...northAreas, ...northEastAreas];
+
+  const locationStr = job.location.toLowerCase();
+  // Secondary: scan description for explicit "based in / located in / office in|at <area>" phrases
+  const locPhrase = (job.descriptionText.toLowerCase().match(
+    /(?:based in|located in|office (?:in|at)|workplace[:\s]+|work location[:\s]+)\s*([\w\s,]+)/g
+  ) || []).join(' ');
+  const locationTarget = locationStr + ' ' + locPhrase;
+  const inFringe = allFringeAreas.some(a => locationTarget.includes(a));
+  const locationPenalty = inFringe ? 10 : 0;
+
   // Deal-breaker penalty (logistics/supply chain/heavy industry)
   const hasDealBreaker = USER_PROFILE.dealBreakerKeywords.some(k => corpus.includes(k));
   const dealBreakerPenalty = hasDealBreaker ? 25 : 0;
 
-  const raw = skillScore + titleScore - seniorityPenalty + expScore + boostScore + salaryScore - executionPenalty - dealBreakerPenalty;
+  const raw = skillScore + titleScore - seniorityPenalty + expScore + boostScore + salaryScore - executionPenalty - locationPenalty - dealBreakerPenalty;
   return {
     score:         Math.round(Math.min(100, Math.max(5, raw))),
     matchedSkills: allMatched.slice(0, 6),
