@@ -829,7 +829,7 @@ async function fetchMCFJobs() {
   try {
     const results = await Promise.all(
       searches.map(q =>
-        fetch(`/api/mcf/v2/jobs?search=${encodeURIComponent(q)}&limit=20&page=0`)
+        fetch(`/api/mcf?search=${encodeURIComponent(q)}&limit=20&page=0`)
           .then(r => r.json())
       )
     );
