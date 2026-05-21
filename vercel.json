@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/mcf/:path*",
+      "destination": "https://api.mycareersfuture.gov.sg/:path*"
+    }
+  ]
+}
