@@ -627,11 +627,9 @@
 // ─────────────────────────────────────────────────────────────────
 //  API KEYS — paste your keys here after signing up (both are free)
 // ─────────────────────────────────────────────────────────────────
-const CONFIG = {
-  jsearchKey:  '751d080e26mshf8f066012d093c6p1245a2jsn5e37292325ee',   // rapidapi.com → search "JSearch" → subscribe free
-  adzunaAppId: '7db580ac',  // developer.adzuna.com → register → My Apps
-  adzunaKey:   'c828c64e0bf3b2f942c0969545fc8277',
-};
+// API keys are stored securely as Vercel environment variables.
+// No keys needed here — /api/jsearch and /api/adzuna proxy the requests server-side.
+const CONFIG = {};
 
 // ─────────────────────────────────────────────────────────────────
 //  USER PROFILE  — Nellie Lim · Product Marketing Analyst · ~2 yrs
@@ -870,7 +868,6 @@ async function fetchMCFJobs() {
 
 async function fetchJSearchJobs() {
   const jobs = [];
-  if (CONFIG.jsearchKey === 'YOUR_RAPIDAPI_KEY') return jobs;
   const queries = [
     'marketing operations singapore',
     'strategy operations singapore',
@@ -879,12 +876,7 @@ async function fetchJSearchJobs() {
   try {
     const results = await Promise.all(
       queries.map(q =>
-        fetch(`https://jsearch.p.rapidapi.com/search?query=${encodeURIComponent(q)}&page=1&num_pages=2`, {
-          headers: {
-            'X-RapidAPI-Key':  CONFIG.jsearchKey,
-            'X-RapidAPI-Host': 'jsearch.p.rapidapi.com',
-          },
-        }).then(r => r.json())
+        fetch(`/api/jsearch?query=${encodeURIComponent(q)}`).then(r => r.json())
       )
     );
     const seen = new Set();
@@ -919,13 +911,11 @@ async function fetchJSearchJobs() {
 
 async function fetchAdzunaJobs() {
   const jobs = [];
-  if (CONFIG.adzunaAppId === 'YOUR_ADZUNA_APP_ID') return jobs;
   const queries = ['marketing operations', 'business strategy', 'growth analytics'];
   try {
     const results = await Promise.all(
       queries.map(q =>
-        fetch(`https://api.adzuna.com/v1/api/jobs/sg/search/1?app_id=${CONFIG.adzunaAppId}&app_key=${CONFIG.adzunaKey}&what=${encodeURIComponent(q)}&results_per_page=30&content-type=application/json`)
-          .then(r => r.json())
+        fetch(`/api/adzuna?what=${encodeURIComponent(q)}`).then(r => r.json())
       )
     );
     const seen = new Set();
@@ -1240,10 +1230,7 @@ updateLocationClear();
 
 init();
 
-// Show setup banner if any key is still a placeholder
-if (CONFIG.jsearchKey === 'YOUR_RAPIDAPI_KEY' || CONFIG.adzunaAppId === 'YOUR_ADZUNA_APP_ID') {
-  document.getElementById('setupBanner').style.display = '';
-}
+// Setup banner hidden — keys now managed via Vercel environment variables
 </script>
 </body>
 </html>
