@@ -712,6 +712,24 @@ function extractYearsExp(text) {
   return null;
 }
 
+function parseSalarySGD(text) {
+  // Matches: SGD 4,500 / $4500/month / 4.5k per month / 4500 to 5000 per month
+  const patterns = [
+    /sgd\s*\$?\s*([\d,]+(?:\.\d+)?)\s*k?(?:\s*[-–to]+\s*([\d,]+(?:\.\d+)?)k?)?/i,
+    /\$\s*([\d,]+(?:\.\d+)?)\s*k?(?:\s*[-–to]+\s*([\d,]+(?:\.\d+)?)k?)?\s*(?:\/\s*(?:month|mth|mo))/i,
+    /([\d,]+(?:\.\d+)?)\s*k(?:\s*[-–to]+\s*([\d,]+(?:\.\d+)?)k?)?\s*(?:\/\s*(?:month|mth|mo)|per\s+month)/i,
+  ];
+  for (const p of patterns) {
+    const m = text.match(p);
+    if (m) {
+      let val = parseFloat(m[1].replace(/,/g, ''));
+      if (val < 50) val *= 1000; // "4.5k" → 4500
+      return val;
+    }
+  }
+  return null;
+}
+
 function calculateFit(job) {
   const corpus = (job.title + ' ' + job.descriptionText).toLowerCase();
 
@@ -730,7 +748,15 @@ function calculateFit(job) {
   const titleHit   = USER_PROFILE.targetTitles.some(t => titleLower.includes(t));
   const titleScore = titleHit ? 15 : 3;
 
-  // Experience fit — up to 10 pts (Nellie has ~2 yrs; sweet spot is 1–4 yr roles)
+  // Seniority penalty — checks title only to avoid false positives in description body
+  // C-suite: −25 pts · Senior/Manager/Director/VP/Lead: −15 pts
+  const cSuiteTitles  = ['cmo', 'coo', 'cto', 'chief', 'president'];
+  const seniorTitles  = ['senior', 'manager', 'director', 'head of', 'vp', 'vice president', 'principal', 'lead'];
+  const cSuiteHit     = cSuiteTitles.some(t => titleLower.includes(t));
+  const seniorHit     = seniorTitles.some(t => titleLower.includes(t));
+  const seniorityPenalty = cSuiteHit ? 25 : seniorHit ? 15 : 0;
+
+  // Experience fit — up to 10 pts (Jollie has ~2.8 yrs; sweet spot is 1–4 yr roles)
   const reqYrs = job.minimumYearsExperience ?? extractYearsExp(corpus);
   let expScore = 8; // default when not listed
   if (reqYrs !== null) {
@@ -744,11 +770,31 @@ function calculateFit(job) {
   const boostHits  = USER_PROFILE.boostKeywords.filter(k => corpus.includes(k));
   const boostScore = Math.min(15, boostHits.length * 4);
 
+  // Salary range detection (+5 / −10 / −5 pts)
+  const detectedSalary = parseSalarySGD(corpus);
+  let salaryScore = 0;
+  if (detectedSalary !== null) {
+    if      (detectedSalary >= 4500 && detectedSalary <= 5500) salaryScore =  5;
+    else if (detectedSalary < 4000)                            salaryScore = -10;
+    else if (detectedSalary > 7000)                            salaryScore =  -5; // likely overleveled
+  }
+
+  // Execution-heavy penalty (−10 pts) — only fires if 2+ admin signals AND zero strategy signals
+  const executionSignals = [
+    'data entry', 'administrative', 'clerical', 'filing',
+    'scheduling', 'receptionist', 'office management', 'coordinate meetings',
+    'minute taking', 'personal assistant', 'pa role',
+  ];
+  const strategySignals = ['own', 'drive', 'develop strategy', 'build', 'lead strategy', 'end-to-end'];
+  const execHits  = executionSignals.filter(s => corpus.includes(s)).length;
+  const stratHits = strategySignals.filter(s => corpus.includes(s)).length;
+  const executionPenalty = (execHits >= 2 && stratHits === 0) ? 10 : 0;
+
   // Deal-breaker penalty (logistics/supply chain/heavy industry)
   const hasDealBreaker = USER_PROFILE.dealBreakerKeywords.some(k => corpus.includes(k));
-  const penalty = hasDealBreaker ? 25 : 0;
+  const dealBreakerPenalty = hasDealBreaker ? 25 : 0;
 
-  const raw = skillScore + titleScore + expScore + boostScore - penalty;
+  const raw = skillScore + titleScore - seniorityPenalty + expScore + boostScore + salaryScore - executionPenalty - dealBreakerPenalty;
   return {
     score:         Math.round(Math.min(100, Math.max(5, raw))),
     matchedSkills: allMatched.slice(0, 6),
