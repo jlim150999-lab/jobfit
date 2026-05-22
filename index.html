@@ -543,6 +543,134 @@
 
     .back-btn:hover { background: var(--bg); }
 
+    /* ── AI Assessment section ── */
+    .ai-section { margin-bottom: 26px; }
+
+    .ai-loading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 18px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .ai-spinner {
+      width: 15px;
+      height: 15px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+      animation: ai-spin 0.75s linear infinite;
+    }
+
+    @keyframes ai-spin { to { transform: rotate(360deg); } }
+
+    .ai-result {
+      padding: 18px 20px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+    }
+
+    .ai-result-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .ai-score-num {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .ai-score-num.high { color: var(--fit-high-text); }
+    .ai-score-num.mid  { color: var(--fit-mid-text);  }
+    .ai-score-num.low  { color: var(--fit-low-text);  }
+
+    .ai-score-label {
+      font-size: 0.61rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .ai-verdict {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 11px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .ai-verdict.high { background: var(--fit-high-bg); color: var(--fit-high-text); }
+    .ai-verdict.mid  { background: var(--fit-mid-bg);  color: var(--fit-mid-text);  }
+    .ai-verdict.low  { background: var(--fit-low-bg);  color: var(--fit-low-text);  }
+
+    .ai-summary {
+      font-size: 0.845rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 14px;
+    }
+
+    .ai-points {
+      display: flex;
+      gap: 16px;
+    }
+
+    .ai-col { flex: 1; min-width: 0; }
+
+    .ai-col-label {
+      font-size: 0.63rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      margin-bottom: 7px;
+    }
+
+    .ai-point-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .ai-point-list li {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      padding-left: 18px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .ai-point-list li::before { position: absolute; left: 0; font-size: 0.75rem; }
+    .ai-strengths li::before { content: '✓'; color: var(--fit-high-text); }
+    .ai-gaps li::before { content: '△'; color: var(--fit-mid-text); font-size: 0.65rem; top: 2px; }
+
+    .ai-note {
+      font-size: 0.64rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .ai-error {
+      font-size: 0.78rem;
+      color: var(--fit-low-text);
+      padding: 11px 16px;
+      background: var(--fit-low-bg);
+      border-radius: var(--radius-sm);
+      border: 1px solid #f0c0c0;
+    }
+
     /* ── Skeleton (compact) ── */
     .skeleton-grid {
       display: flex;
@@ -743,6 +871,139 @@
     @media (max-width: 640px) {
       .header, .main, .footer { padding-left: 16px; padding-right: 16px; }
     }
+
+    /* ── Tab Navigation ── */
+    .tab-nav {
+      display: flex;
+      gap: 2px;
+      border-top: 1px solid var(--border-light);
+      padding-top: 10px;
+      margin-top: 8px;
+    }
+    .tab-btn {
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: color 0.12s, background 0.12s;
+    }
+    .tab-btn:hover { color: var(--text-secondary); background: var(--border-light); }
+    .tab-btn.active { color: var(--accent); background: var(--accent-light); font-weight: 600; }
+    .tab-section { min-height: calc(100vh - 160px); }
+    #tab-jobs { display: flex; flex-direction: column; }
+
+    /* ── Dashboard ── */
+    .tab-content { padding: 32px 44px; max-width: 1100px; }
+    .dash-section-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; gap: 12px; }
+    .dash-section-title { font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; }
+    .dash-section-sub { font-size: 0.76rem; color: var(--text-muted); }
+    .dash-empty { padding: 28px 20px; background: var(--surface); border: 1.5px dashed var(--border); border-radius: var(--radius-sm); text-align: center; color: var(--text-muted); font-size: 0.82rem; }
+    .dash-table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: var(--radius-sm); overflow: hidden; box-shadow: var(--shadow); }
+    .dash-table th { font-size: 0.63rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); padding: 9px 14px; text-align: left; border-bottom: 1.5px solid var(--border); background: var(--bg); white-space: nowrap; }
+    .dash-table td { padding: 11px 14px; font-size: 0.84rem; color: var(--text-secondary); border-bottom: 1px solid var(--border-light); vertical-align: middle; }
+    .dash-table tbody tr:last-child td { border-bottom: none; }
+    .dash-table tbody tr:hover td { background: var(--surface-warm); }
+    .dash-role-name { font-weight: 600; color: var(--text-primary); font-size: 0.86rem; }
+    .dash-company-name { font-size: 0.78rem; color: var(--text-muted); margin-top: 1px; }
+    .ai-score-chip { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+    .ai-score-chip.high { background: var(--fit-high-bg); color: var(--fit-high-text); }
+    .ai-score-chip.mid  { background: var(--fit-mid-bg);  color: var(--fit-mid-text); }
+    .ai-score-chip.low  { background: var(--fit-low-bg);  color: var(--fit-low-text); }
+    .pursue-toggle { display: inline-flex; border-radius: 20px; overflow: hidden; border: 1.5px solid var(--border); font-size: 0.73rem; }
+    .pursue-toggle button { padding: 4px 11px; background: none; border: none; cursor: pointer; font-family: inherit; font-size: inherit; font-weight: 500; color: var(--text-muted); transition: background 0.1s, color 0.1s; }
+    .pursue-toggle button.active-yes { background: #dcfce7; color: #16a34a; }
+    .pursue-toggle button.active-no  { background: var(--border-light); color: var(--text-muted); }
+    .stretch-badge { display: inline-block; font-size: 0.67rem; padding: 1px 8px; border-radius: 20px; background: #FEF9C3; color: #92400e; font-weight: 600; margin-left: 5px; vertical-align: middle; }
+    .pipeline-stage { font-size: 0.78rem; padding: 5px 8px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); font-family: inherit; color: var(--text-secondary); cursor: pointer; }
+    .pipeline-note { width: 100%; border: none; background: transparent; font-family: inherit; font-size: 0.8rem; color: var(--text-secondary); outline: none; padding: 0; }
+    .btn-add-role { padding: 8px 16px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); font-family: inherit; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: background 0.12s; white-space: nowrap; }
+    .btn-add-role:hover { background: var(--accent-hover); }
+    .btn-primary { padding: 9px 20px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); font-family: inherit; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: background 0.12s; }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-primary:disabled { opacity: 0.6; cursor: default; }
+    .btn-secondary { padding: 7px 14px; background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: background 0.12s; }
+    .btn-secondary:hover { background: var(--bg); }
+
+    /* ── Application Kit + Interview Prep shared ── */
+    .kit-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
+    .role-selector-wrap { display: flex; align-items: center; gap: 8px; }
+    .role-selector-label { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; }
+    .role-selector { padding: 7px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); font-family: inherit; font-size: 0.82rem; color: var(--text-primary); cursor: pointer; min-width: 260px; }
+    .kit-section, .prep-section { margin-bottom: 28px; background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 22px 26px; }
+    .kit-section-title, .prep-section-title { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 16px; font-weight: 600; }
+    .prep-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .kit-empty, .prep-empty { padding: 40px; text-align: center; color: var(--text-muted); font-size: 0.84rem; }
+    .cv-textarea, .prep-textarea { width: 100%; min-height: 140px; padding: 11px 13px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); font-family: inherit; font-size: 0.84rem; line-height: 1.65; color: var(--text-primary); resize: vertical; outline: none; transition: border-color 0.12s; }
+    .cv-textarea:focus, .prep-textarea:focus { border-color: var(--accent); }
+    .cv-input-area { display: flex; flex-direction: column; gap: 12px; }
+    .btn-voice { padding: 7px 14px; background: #EDE9FE; border: 1.5px solid #C4B5FD; border-radius: var(--radius-sm); font-family: inherit; font-size: 0.8rem; font-weight: 500; color: #5B21B6; cursor: pointer; transition: background 0.12s; }
+    .btn-voice.recording { background: #FEE2E2; border-color: #FCA5A5; color: #991B1B; animation: prep-pulse 1s infinite; }
+    @keyframes prep-pulse { 0%,100%{opacity:1} 50%{opacity:0.65} }
+    .story-card { background: var(--bg); border: 1.5px solid var(--border-light); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 12px; }
+    .story-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .story-title-input { background: none; border: none; font-family: inherit; font-size: 0.86rem; font-weight: 600; color: var(--text-primary); width: 100%; outline: none; }
+    .story-field label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); display: block; margin-bottom: 4px; margin-top: 10px; }
+    .story-field textarea { width: 100%; min-height: 52px; padding: 7px 9px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); font-family: inherit; font-size: 0.8rem; line-height: 1.5; color: var(--text-secondary); resize: vertical; outline: none; }
+    .story-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+    .story-tag-chip { font-size: 0.68rem; padding: 3px 9px; border-radius: 20px; background: var(--border-light); color: var(--text-muted); cursor: pointer; transition: background 0.1s; }
+    .story-tag-chip.active { background: var(--accent-light); color: var(--accent); font-weight: 600; }
+    .question-category { margin-bottom: 18px; }
+    .question-category-label { font-size: 0.63rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 9px; font-weight: 600; }
+    .question-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding: 10px 12px; background: var(--bg); border-radius: var(--radius-sm); margin-bottom: 7px; font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; }
+    .question-item button { font-size: 0.71rem; padding: 3px 10px; white-space: nowrap; flex-shrink: 0; }
+    .mock-question-display { font-size: 1rem; font-weight: 600; color: var(--text-primary); line-height: 1.5; margin-bottom: 14px; padding: 14px 18px; background: var(--accent-light); border-left: 3px solid var(--accent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+    .mock-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+    .mock-feedback { padding: 18px 20px; background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-sm); margin-top: 20px; }
+    .mock-rating { font-size: 1.6rem; font-weight: 700; margin-bottom: 6px; }
+    .mock-rating-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-left: 8px; font-weight: 400; vertical-align: middle; font-size: 0.76rem; }
+    .mock-feedback-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 7px; font-weight: 600; }
+    .mock-fb-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+    .mock-fb-list li { font-size: 0.82rem; color: var(--text-secondary); padding-left: 16px; position: relative; line-height: 1.5; }
+    .mock-fb-list li::before { position: absolute; left: 0; }
+    .mock-strong li::before { content: '✓'; color: var(--fit-high-text); }
+    .mock-missing li::before { content: '○'; color: var(--fit-mid-text); }
+    .mock-opener { margin-top: 14px; padding: 12px 16px; background: var(--surface-warm); border-radius: var(--radius-sm); border-left: 3px solid var(--accent-light); font-size: 0.84rem; color: var(--text-secondary); font-style: italic; }
+
+    /* ── Modal ── */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .modal-card { background: var(--surface); border-radius: var(--radius); width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px 16px; border-bottom: 1px solid var(--border-light); }
+    .modal-header h3 { font-size: 1rem; font-weight: 700; }
+    .modal-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text-muted); line-height: 1; padding: 2px; }
+    .modal-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; }
+    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border-light); display: flex; justify-content: flex-end; gap: 10px; }
+    .form-field label { display: block; font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .form-input { width: 100%; padding: 8px 11px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); font-family: inherit; font-size: 0.84rem; color: var(--text-primary); outline: none; }
+    .form-input:focus { border-color: var(--accent); }
+    .form-textarea { width: 100%; min-height: 130px; padding: 8px 11px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); font-family: inherit; font-size: 0.84rem; color: var(--text-primary); line-height: 1.6; resize: vertical; outline: none; }
+    .form-textarea:focus { border-color: var(--accent); }
+
+    /* ── Track button (detail panel) ── */
+    .track-btn { padding: 7px 14px; background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.78rem; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.12s; }
+    .track-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+    .track-btn.tracked { background: #dcfce7; border-color: #86efac; color: #15803d; }
+
+    /* ── CV results ── */
+    .cv-results { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+    .cv-result-block { background: var(--bg); border-radius: var(--radius-sm); padding: 16px; }
+    .cv-result-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 9px; font-weight: 600; }
+    .cv-overall { font-size: 0.86rem; color: var(--text-secondary); line-height: 1.75; }
+    .cv-headline { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); font-style: italic; }
+    .cv-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .cv-list li { font-size: 0.82rem; color: var(--text-secondary); padding-left: 18px; position: relative; line-height: 1.5; }
+    .cv-list li::before { position: absolute; left: 0; }
+    .cv-strengths li::before { content: '✓'; color: var(--fit-high-text); }
+    .cv-gaps li::before { content: '△'; color: var(--fit-mid-text); }
+    .cv-tweaks li::before { content: '→'; color: var(--accent); font-weight: 600; }
+
+    /* ── AI highlight/tweak extras ── */
+    .ai-highlight li::before { content: '✦'; color: var(--accent); }
+    .ai-tweak li::before { content: '→'; color: var(--accent); font-weight: 600; }
   </style>
 </head>
 <body>
@@ -752,7 +1013,13 @@
     <h1>JobFit</h1>
     <span class="header-tagline">Marketing &amp; Strategy Ops</span>
   </div>
-  <div class="search-row">
+  <nav class="tab-nav" id="tabNav">
+    <button class="tab-btn active" data-tab="jobs">Job Search</button>
+    <button class="tab-btn" data-tab="dashboard">Dashboard</button>
+    <button class="tab-btn" data-tab="kit">Application Kit</button>
+    <button class="tab-btn" data-tab="interview">Interview Prep</button>
+  </nav>
+  <div class="search-row" id="jobsSearchBar">
     <div class="search-wrap">
       <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none"
            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -789,6 +1056,7 @@
   </div>
 </header>
 
+<section id="tab-jobs" class="tab-section">
 <main class="main">
   <div id="errorBanner" class="error-banner" style="display:none;"></div>
   <div id="setupBanner" class="setup-banner" style="display:none;">
@@ -837,6 +1105,148 @@
     </div>
   </div>
 </main>
+</section><!-- end #tab-jobs -->
+
+<!-- ── Dashboard Tab ── -->
+<section id="tab-dashboard" class="tab-section" style="display:none;">
+  <div class="tab-content">
+    <div class="dash-section-header">
+      <div>
+        <div class="dash-section-title">Tracked Roles</div>
+        <div class="dash-section-sub">Roles saved from Job Search or added manually</div>
+      </div>
+      <button class="btn-add-role" onclick="openAddRoleModal()">+ Add role</button>
+    </div>
+    <div id="trackedEmpty" class="dash-empty">No roles tracked yet. Browse Job Search and save roles, or add one manually.</div>
+    <table class="dash-table" id="trackedTable" style="display:none;">
+      <thead><tr>
+        <th>Role</th><th>Company</th><th>AI Score</th><th>Pursue?</th><th></th>
+      </tr></thead>
+      <tbody id="trackedTableBody"></tbody>
+    </table>
+
+    <div class="dash-section-header" style="margin-top:40px;">
+      <div>
+        <div class="dash-section-title">Application Pipeline</div>
+        <div class="dash-section-sub">Roles you're actively pursuing — mark a role "Yes" above to add it here</div>
+      </div>
+    </div>
+    <div id="pipelineEmpty" class="dash-empty">No active applications yet.</div>
+    <table class="dash-table" id="pipelineTable" style="display:none;">
+      <thead><tr>
+        <th>Role</th><th>Company</th><th>Stage</th><th>Applied</th><th>Notes</th><th></th>
+      </tr></thead>
+      <tbody id="pipelineTableBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ── Application Kit Tab ── -->
+<section id="tab-kit" class="tab-section" style="display:none;">
+  <div class="tab-content">
+    <div class="kit-header">
+      <div class="dash-section-title">Application Kit</div>
+      <div class="role-selector-wrap">
+        <span class="role-selector-label">Working on:</span>
+        <select class="role-selector" id="kitRoleSelect" onchange="onKitRoleChange()">
+          <option value="">— Select a tracked role —</option>
+        </select>
+      </div>
+    </div>
+    <div id="kitEmpty" class="kit-empty">Select a tracked role above to see your fit brief and tailor your CV.</div>
+    <div id="kitFitBrief" class="kit-section" style="display:none;">
+      <div class="kit-section-title">Fit Brief — AI Assessment</div>
+      <div id="kitFitContent"></div>
+    </div>
+    <div id="kitCvSection" class="kit-section" style="display:none;">
+      <div class="kit-section-title">CV Analysis</div>
+      <div class="cv-input-area">
+        <textarea id="cvTextarea" class="cv-textarea" placeholder="Paste your CV text here (open your CV, Ctrl+A, Ctrl+C, then paste here)…"></textarea>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <button class="btn-primary" onclick="analyseCV()" id="cvAnalyseBtn">Analyse my CV →</button>
+          <span style="font-size:0.74rem;color:var(--text-muted)">Claude will compare your CV against the JD and suggest specific tweaks</span>
+        </div>
+      </div>
+      <div id="cvResultsArea"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Interview Prep Tab ── -->
+<section id="tab-interview" class="tab-section" style="display:none;">
+  <div class="tab-content">
+    <div class="kit-header">
+      <div class="dash-section-title">Interview Prep</div>
+      <div class="role-selector-wrap">
+        <span class="role-selector-label">Preparing for:</span>
+        <select class="role-selector" id="prepRoleSelect" onchange="onPrepRoleChange()">
+          <option value="">— Select a tracked role —</option>
+        </select>
+      </div>
+    </div>
+    <div id="prepEmpty" class="prep-empty">Select a tracked role above to start interview prep.</div>
+    <div id="prepSections" style="display:none;">
+      <div class="prep-section">
+        <div class="prep-section-title">Company Research</div>
+        <textarea id="companyResearchTextarea" class="prep-textarea"
+          placeholder="Notes on the company: mission, culture, recent news, products, why you want to work there…"
+          oninput="autosavePrepField('companyResearch', this.value)"></textarea>
+      </div>
+      <div class="prep-section">
+        <div class="prep-section-header">
+          <div class="prep-section-title">My Stories (STAR Format)</div>
+          <button class="btn-secondary" onclick="addStory()">+ Add story</button>
+        </div>
+        <div id="storiesContainer"><p style="color:var(--text-muted);font-size:0.82rem">No stories yet.</p></div>
+      </div>
+      <div class="prep-section">
+        <div class="prep-section-header">
+          <div class="prep-section-title">Question Bank</div>
+          <button class="btn-secondary" id="genQuestionsBtn" onclick="generateQuestions()">Generate for this role</button>
+        </div>
+        <div id="questionsContainer"><p style="color:var(--text-muted);font-size:0.82rem">Click "Generate for this role" to create tailored questions.</p></div>
+      </div>
+      <div class="prep-section" id="mockPracticeSection" style="display:none;">
+        <div class="prep-section-title">Mock Practice</div>
+        <div class="mock-question-display" id="mockQuestion"></div>
+        <textarea id="mockAnswerTextarea" class="prep-textarea" style="min-height:120px"
+          placeholder="Type your answer here — aim for 2–3 minutes of speaking time…"></textarea>
+        <div class="mock-actions">
+          <button class="btn-primary" onclick="getMockFeedback()">Get feedback</button>
+          <button class="btn-voice" id="voiceBtn" onclick="toggleVoiceRecording()">🎤 Record answer</button>
+          <button class="btn-secondary" onclick="closeMockPractice()">← Back to questions</button>
+        </div>
+        <div id="mockFeedbackArea"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Add Role Modal ── -->
+<div id="addRoleModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this)closeAddRoleModal()">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>Add role manually</h3>
+      <button class="modal-close" onclick="closeAddRoleModal()">&#215;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-field"><label>Job title *</label><input type="text" id="manualTitle" class="form-input" placeholder="e.g. Marketing Specialist"></div>
+      <div class="form-field"><label>Company *</label><input type="text" id="manualCompany" class="form-input" placeholder="e.g. Shopee"></div>
+      <div class="form-field"><label>Job URL</label><input type="url" id="manualUrl" class="form-input" placeholder="https://…"></div>
+      <div class="form-field"><label>How did you find it?</label>
+        <select id="manualSource" class="form-input">
+          <option>LinkedIn</option><option>Recruiter outreach</option><option>Referral</option>
+          <option>Company website</option><option>Other</option>
+        </select>
+      </div>
+      <div class="form-field"><label>Job description *</label><textarea id="manualJD" class="form-textarea" placeholder="Paste the full job description here…"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeAddRoleModal()">Cancel</button>
+      <button class="btn-primary" id="saveManualBtn" onclick="saveManualRole()">Save &amp; score →</button>
+    </div>
+  </div>
+</div>
 
 <footer class="footer">
   Jobs sourced from MyCareersFuture, The Muse &amp; Remotive &nbsp;·&nbsp;
@@ -1387,14 +1797,90 @@ function renderDetailPanel(job) {
       <span class="exp-tag">${EXP_ICON} ${esc(expTxt)}</span>
       ${salaryHtml}
     </div>
+    <div class="ai-section">
+      <div class="detail-section-label" style="margin-bottom:10px">AI Assessment</div>
+      <div class="ai-loading" id="aiSection">
+        <div class="ai-spinner"></div>Analysing with Claude&hellip;
+      </div>
+    </div>
     <div class="detail-section-label">About the role</div>
     <div class="detail-desc">${esc(job.descriptionText.slice(0, 4000))}</div>
     <div class="detail-cta">
       <a href="${esc(job.url)}" target="_blank" rel="noopener noreferrer" class="view-btn">
         View posting ${LINK_ICON}
       </a>
+      <button id="trackBtn_${esc(job.id)}" class="track-btn${isTracked(job.id) ? ' tracked' : ''}"
+        onclick="trackJob('${esc(job.id)}')">
+        ${isTracked(job.id) ? 'In Dashboard →' : '+ Track this role'}
+      </button>
       <span class="detail-source">${esc(job.source)}</span>
       <button class="back-btn" onclick="closeMobileDetail()">← Back to list</button>
+    </div>`;
+  loadAIScore(job);
+}
+
+function verdictClass(verdict) {
+  if (!verdict) return 'mid';
+  const v = verdict.toLowerCase();
+  if (v.includes('excellent') || v.includes('strong')) return 'high';
+  if (v.includes('poor') || v.includes('weak')) return 'low';
+  return 'mid';
+}
+
+async function loadAIScore(job) {
+  // Return cached result immediately if already fetched
+  if (job._aiScore) {
+    renderAIResult(job._aiScore);
+    return;
+  }
+  try {
+    const res = await fetch('/api/claude-score', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        jobTitle:       job.title,
+        company:        job.company,
+        jobDescription: job.descriptionText,
+      }),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    job._aiScore = data;   // cache on job object
+    renderAIResult(data);
+  } catch (e) {
+    const el = document.getElementById('aiSection');
+    if (el) el.outerHTML = `<div class="ai-error">AI assessment unavailable — ${esc(e.message)}</div>`;
+  }
+}
+
+function renderAIResult(data) {
+  const el = document.getElementById('aiSection');
+  if (!el) return;
+  const cls = verdictClass(data.verdict);
+  const strengthsHtml = (data.strengths || []).map(s => `<li>${esc(s)}</li>`).join('');
+  const gapsHtml      = (data.gaps || []).map(g => `<li>${esc(g)}</li>`).join('');
+  const highlightHtml = (data.highlight || []).map(h => `<li>${esc(h)}</li>`).join('');
+  const tweakHtml     = (data.tweak || []).map(t => `<li>${esc(t)}</li>`).join('');
+  el.outerHTML = `
+    <div class="ai-result">
+      <div class="ai-result-header">
+        <div>
+          <div class="ai-score-num ${cls}">${data.score}%</div>
+          <div class="ai-score-label">Claude score</div>
+        </div>
+        <div class="ai-verdict ${cls}">${esc(data.verdict)}</div>
+      </div>
+      <div class="ai-summary">${esc(data.summary)}</div>
+      ${(strengthsHtml || gapsHtml) ? `<div class="ai-points">
+        ${strengthsHtml ? `<div class="ai-col"><div class="ai-col-label">Why it works</div><ul class="ai-point-list ai-strengths">${strengthsHtml}</ul></div>` : ''}
+        ${gapsHtml ? `<div class="ai-col"><div class="ai-col-label">Watch out for</div><ul class="ai-point-list ai-gaps">${gapsHtml}</ul></div>` : ''}
+      </div>` : ''}
+      ${(highlightHtml || tweakHtml) ? `<div class="ai-points" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-light)">
+        ${highlightHtml ? `<div class="ai-col"><div class="ai-col-label">What to highlight</div><ul class="ai-point-list ai-highlight">${highlightHtml}</ul></div>` : ''}
+        ${tweakHtml ? `<div class="ai-col"><div class="ai-col-label">What to tweak</div><ul class="ai-point-list ai-tweak">${tweakHtml}</ul></div>` : ''}
+      </div>` : ''}
+      <div class="ai-note">Powered by Claude Opus · assessed on your profile from memory</div>
     </div>`;
 }
 
@@ -1624,6 +2110,535 @@ updateLocationClear();
 init();
 
 // Setup banner hidden — keys now managed via Vercel environment variables
+
+// ─────────────────────────────────────────────────────────────────
+//  TAB NAVIGATION
+// ─────────────────────────────────────────────────────────────────
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tabId));
+  document.querySelectorAll('.tab-section').forEach(s => s.style.display = s.id === 'tab-' + tabId ? '' : 'none');
+  const searchBar = document.getElementById('jobsSearchBar');
+  if (searchBar) searchBar.style.display = tabId === 'jobs' ? '' : 'none';
+  updateSplitHeight();
+  if (tabId === 'dashboard') renderDashboard();
+  if (tabId === 'kit' || tabId === 'interview') populateRoleSelectors();
+}
+
+document.getElementById('tabNav').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn');
+  if (btn && btn.dataset.tab) switchTab(btn.dataset.tab);
+});
+
+// ─────────────────────────────────────────────────────────────────
+//  TRACKED ROLES — localStorage cache + Vercel KV sync
+// ─────────────────────────────────────────────────────────────────
+const LS_KEY = 'jobfit_tracked';
+let trackedRoles = [];
+
+try { trackedRoles = JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch { trackedRoles = []; }
+
+function persistLocal() {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(trackedRoles)); } catch {}
+}
+
+async function syncFromKV() {
+  try {
+    const res = await fetch('/api/roles');
+    if (!res.ok) return;
+    const { roles } = await res.json();
+    if (Array.isArray(roles)) { trackedRoles = roles; persistLocal(); }
+  } catch (e) { console.warn('KV sync failed, using localStorage:', e); }
+}
+
+async function saveRoleToKV(role) {
+  const idx = trackedRoles.findIndex(r => r.id === role.id);
+  if (idx >= 0) trackedRoles[idx] = { ...trackedRoles[idx], ...role };
+  else trackedRoles.unshift(role);
+  persistLocal();
+  try { await fetch('/api/roles', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({action:'save', role}) }); }
+  catch (e) { console.warn('KV save failed:', e); }
+}
+
+async function updateRoleInKV(id, patch) {
+  const idx = trackedRoles.findIndex(r => r.id === id);
+  if (idx >= 0) trackedRoles[idx] = { ...trackedRoles[idx], ...patch };
+  persistLocal();
+  try { await fetch('/api/roles', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({action:'update', id, patch}) }); }
+  catch (e) { console.warn('KV update failed:', e); }
+}
+
+async function deleteRoleFromKV(id) {
+  trackedRoles = trackedRoles.filter(r => r.id !== id);
+  persistLocal();
+  try { await fetch('/api/roles', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({action:'delete', id}) }); }
+  catch (e) { console.warn('KV delete failed:', e); }
+}
+
+function isTracked(jobId) { return trackedRoles.some(r => r.id === jobId); }
+function getTrackedRole(id) { return trackedRoles.find(r => r.id === id); }
+
+// ─────────────────────────────────────────────────────────────────
+//  TRACK A JOB FROM DETAIL PANEL
+// ─────────────────────────────────────────────────────────────────
+async function trackJob(jobId) {
+  const btn = document.getElementById('trackBtn_' + jobId);
+  if (isTracked(jobId)) { switchTab('dashboard'); return; }
+
+  if (btn) { btn.textContent = 'Saving…'; btn.disabled = true; }
+  const job = allJobs.find(j => j.id === jobId);
+  if (!job) return;
+
+  const role = {
+    id: job.id, title: job.title, company: job.company, url: job.url,
+    source: job.source, descriptionText: job.descriptionText,
+    location: job.location || '', isRemote: job.isRemote || false, type: job.type || '',
+    addedAt: new Date().toISOString(),
+    _fit: job._fit || null, _aiScore: job._aiScore || null,
+    isPursuing: false, isStretch: false, stretchLabel: '',
+    status: 'saved', appliedDate: null, notes: '',
+    cvText: null, cvAnalysis: null,
+    interviewPrep: { companyResearch: '', stories: [], questions: {}, mockLog: [] },
+  };
+
+  await saveRoleToKV(role);
+  if (btn) { btn.textContent = 'In Dashboard →'; btn.classList.add('tracked'); btn.disabled = false; }
+  populateRoleSelectors();
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  DASHBOARD RENDERING
+// ─────────────────────────────────────────────────────────────────
+const STAGES = ['Saved','Tailoring CV','Applied','Screening','Interviewing','Final Round','Offer','Rejected','Withdrawn'];
+
+function renderDashboard() { renderTrackedTable(); renderPipelineTable(); }
+
+function renderTrackedTable() {
+  const body = document.getElementById('trackedTableBody');
+  const table = document.getElementById('trackedTable');
+  const empty = document.getElementById('trackedEmpty');
+  if (!body) return;
+  if (trackedRoles.length === 0) { table.style.display = 'none'; empty.style.display = ''; return; }
+  table.style.display = ''; empty.style.display = 'none';
+  body.innerHTML = trackedRoles.map(r => {
+    const ai = r._aiScore;
+    const scoreNum = ai ? ai.score : r._fit ? r._fit.score : null;
+    const scoreCls = ai ? verdictClass(ai.verdict) : r._fit ? fitClass(r._fit.score) : 'mid';
+    const scoreLabel = ai ? '' : r._fit ? '<span style="font-size:0.6rem;opacity:0.6;font-weight:400"> rule</span>' : '';
+    const scoreHtml = scoreNum !== null
+      ? `<span class="ai-score-chip ${scoreCls}">${scoreNum}%${scoreLabel}</span>`
+      : `<span style="color:var(--text-muted);font-size:0.78rem">Scoring…</span>`;
+    const isStretch = r.isPursuing && (scoreNum || 100) <= 65;
+    return `<tr>
+      <td><div class="dash-role-name">${esc(r.title)}${isStretch ? '<span class="stretch-badge">✦ Stretch</span>' : ''}</div></td>
+      <td><div class="dash-company-name">${esc(r.company)}</div></td>
+      <td>${scoreHtml}</td>
+      <td><div class="pursue-toggle">
+        <button onclick="togglePursue('${r.id}',true)"  class="${r.isPursuing ? 'active-yes' : ''}">Yes</button>
+        <button onclick="togglePursue('${r.id}',false)" class="${!r.isPursuing ? 'active-no' : ''}">No</button>
+      </div></td>
+      <td style="white-space:nowrap">
+        <button class="btn-secondary" style="font-size:0.72rem;padding:4px 10px" onclick="openKitForRole('${r.id}')">Prep →</button>
+        <button class="btn-secondary" style="font-size:0.72rem;padding:4px 8px;margin-left:4px;color:var(--fit-low-text)" onclick="confirmDeleteRole('${r.id}')">✕</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function renderPipelineTable() {
+  const body = document.getElementById('pipelineTableBody');
+  const table = document.getElementById('pipelineTable');
+  const empty = document.getElementById('pipelineEmpty');
+  if (!body) return;
+  const pursuing = trackedRoles.filter(r => r.isPursuing);
+  if (!pursuing.length) { table.style.display = 'none'; empty.style.display = ''; return; }
+  table.style.display = ''; empty.style.display = 'none';
+  body.innerHTML = pursuing.map(r => {
+    const opts = STAGES.map(s => `<option${r.status === s ? ' selected' : ''}>${s}</option>`).join('');
+    const dt = r.appliedDate ? new Date(r.appliedDate).toLocaleDateString('en-SG',{day:'numeric',month:'short'}) : '—';
+    return `<tr>
+      <td><div class="dash-role-name">${esc(r.title)}</div></td>
+      <td><div class="dash-company-name">${esc(r.company)}</div></td>
+      <td><select class="pipeline-stage" onchange="updateStage('${r.id}',this.value)">${opts}</select></td>
+      <td><span style="font-size:0.8rem;color:var(--text-muted)">${dt}</span></td>
+      <td><input class="pipeline-note" value="${esc(r.notes||'')}" placeholder="Add note…"
+        onblur="updateRoleInKV('${r.id}',{notes:this.value})"></td>
+      <td><button class="btn-secondary" style="font-size:0.72rem;padding:4px 10px" onclick="openKitForRole('${r.id}')">Kit →</button></td>
+    </tr>`;
+  }).join('');
+}
+
+async function togglePursue(id, value) {
+  await updateRoleInKV(id, { isPursuing: value });
+  renderDashboard();
+}
+
+async function updateStage(id, stage) {
+  const patch = { status: stage };
+  if (stage === 'Applied' && !getTrackedRole(id)?.appliedDate) patch.appliedDate = new Date().toISOString();
+  await updateRoleInKV(id, patch);
+  renderPipelineTable();
+}
+
+function confirmDeleteRole(id) {
+  const r = getTrackedRole(id);
+  if (r && confirm(`Remove "${r.title}" at ${r.company} from tracker?`)) {
+    deleteRoleFromKV(id).then(() => renderDashboard());
+  }
+}
+
+function openKitForRole(id) {
+  activeKitRoleId = id; activePrepRoleId = id;
+  switchTab('kit');
+  setTimeout(() => { const s = document.getElementById('kitRoleSelect'); if (s) { s.value = id; onKitRoleChange(); } }, 60);
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  ADD ROLE MANUALLY
+// ─────────────────────────────────────────────────────────────────
+function openAddRoleModal() { document.getElementById('addRoleModal').style.display = ''; }
+function closeAddRoleModal() {
+  document.getElementById('addRoleModal').style.display = 'none';
+  ['manualTitle','manualCompany','manualUrl','manualJD'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+}
+
+async function saveManualRole() {
+  const title   = document.getElementById('manualTitle').value.trim();
+  const company = document.getElementById('manualCompany').value.trim();
+  const url     = document.getElementById('manualUrl').value.trim();
+  const source  = document.getElementById('manualSource').value;
+  const jd      = document.getElementById('manualJD').value.trim();
+  if (!title || !jd) { alert('Please enter at least a job title and job description.'); return; }
+
+  const btn = document.getElementById('saveManualBtn');
+  btn.textContent = 'Saving…'; btn.disabled = true;
+
+  const tmpJob = { id: 'manual_' + Date.now(), title, company, url: url || '#', source,
+    descriptionText: jd, location: '', isRemote: jd.toLowerCase().includes('remote'),
+    type: 'Full-time', minimumYearsExperience: null, mcfSkills: null, mcfExpLabel: null };
+  tmpJob._fit = calculateFit(tmpJob);
+
+  const role = { ...tmpJob, addedAt: new Date().toISOString(), _aiScore: null,
+    isPursuing: false, isStretch: false, stretchLabel: '', status: 'Saved',
+    appliedDate: null, notes: '', cvText: null, cvAnalysis: null,
+    interviewPrep: { companyResearch: '', stories: [], questions: {}, mockLog: [] } };
+
+  await saveRoleToKV(role);
+  closeAddRoleModal();
+  renderDashboard();
+  populateRoleSelectors();
+  btn.textContent = 'Save & score →'; btn.disabled = false;
+
+  // Background AI scoring
+  fetch('/api/claude-score', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ jobTitle: role.title, company: role.company, jobDescription: role.descriptionText }) })
+    .then(r => r.json()).then(data => {
+      if (!data.error) updateRoleInKV(role.id, { _aiScore: data }).then(renderDashboard);
+    }).catch(() => {});
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  ROLE SELECTORS
+// ─────────────────────────────────────────────────────────────────
+function populateRoleSelectors() {
+  ['kitRoleSelect','prepRoleSelect'].forEach(selId => {
+    const sel = document.getElementById(selId);
+    if (!sel) return;
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">— Select a tracked role —</option>' +
+      trackedRoles.map(r => `<option value="${r.id}">${esc(r.title)} · ${esc(r.company)}</option>`).join('');
+    if (cur && trackedRoles.find(r => r.id === cur)) sel.value = cur;
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  APPLICATION KIT
+// ─────────────────────────────────────────────────────────────────
+let activeKitRoleId = null;
+
+function onKitRoleChange() {
+  const sel = document.getElementById('kitRoleSelect');
+  activeKitRoleId = sel?.value || null;
+  const empty = document.getElementById('kitEmpty');
+  const fitSection = document.getElementById('kitFitBrief');
+  const cvSection  = document.getElementById('kitCvSection');
+  if (!activeKitRoleId) { empty.style.display = ''; fitSection.style.display = 'none'; cvSection.style.display = 'none'; return; }
+  const role = getTrackedRole(activeKitRoleId);
+  if (!role) return;
+  empty.style.display = 'none'; fitSection.style.display = ''; cvSection.style.display = '';
+  renderFitBrief(role);
+  if (role.cvAnalysis) renderCVResults(role.cvAnalysis);
+  else document.getElementById('cvResultsArea').innerHTML = '';
+  const ta = document.getElementById('cvTextarea');
+  if (ta) ta.value = role.cvText || '';
+}
+
+function renderFitBrief(role) {
+  const c = document.getElementById('kitFitContent');
+  if (!c) return;
+  const ai = role._aiScore;
+  if (!ai) {
+    c.innerHTML = `<p style="color:var(--text-muted);font-size:0.82rem;line-height:1.7">AI analysis not available yet for this role. Open it in Job Search and click the card to trigger scoring, or wait if you just added it manually.</p>`;
+    return;
+  }
+  const cls = verdictClass(ai.verdict);
+  const mk = (arr, liCls) => (arr||[]).map(x=>`<li>${esc(x)}</li>`).join('');
+  c.innerHTML = `
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;flex-wrap:wrap">
+      <div class="ai-score-num ${cls}" style="font-size:2.1rem;font-weight:700;line-height:1">${ai.score}%</div>
+      <div>
+        <div class="ai-verdict ${cls}" style="display:inline-block;margin-bottom:6px">${esc(ai.verdict)}</div>
+        <div style="font-size:0.84rem;color:var(--text-secondary);line-height:1.7">${esc(ai.summary)}</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:4px">
+      ${(ai.strengths||[]).length ? `<div><div class="cv-result-label">Why you're a fit</div><ul class="cv-list cv-strengths">${mk(ai.strengths)}</ul></div>` : ''}
+      ${(ai.gaps||[]).length ? `<div><div class="cv-result-label">Watch out for</div><ul class="cv-list cv-gaps">${mk(ai.gaps)}</ul></div>` : ''}
+      ${(ai.highlight||[]).length ? `<div><div class="cv-result-label">What to highlight</div><ul class="cv-list cv-tweaks">${mk(ai.highlight)}</ul></div>` : ''}
+      ${(ai.tweak||[]).length ? `<div><div class="cv-result-label">What to tweak</div><ul class="cv-list cv-tweaks">${mk(ai.tweak)}</ul></div>` : ''}
+    </div>`;
+}
+
+async function analyseCV() {
+  const role = getTrackedRole(activeKitRoleId);
+  if (!role) return;
+  const cvText = document.getElementById('cvTextarea')?.value?.trim();
+  if (!cvText || cvText.length < 100) { alert('Please paste your CV text first.'); return; }
+  const btn = document.getElementById('cvAnalyseBtn');
+  btn.textContent = 'Analysing…'; btn.disabled = true;
+  await updateRoleInKV(role.id, { cvText });
+  try {
+    const res = await fetch('/api/cv-analyze', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ jobTitle: role.title, company: role.company, jobDescription: role.descriptionText, cvText }) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    const analysis = { ...data, analysedAt: new Date().toISOString() };
+    await updateRoleInKV(role.id, { cvAnalysis: analysis });
+    renderCVResults(analysis);
+  } catch (e) {
+    document.getElementById('cvResultsArea').innerHTML = `<div class="ai-error" style="margin-top:14px">CV analysis failed: ${esc(e.message)}</div>`;
+  }
+  btn.textContent = 'Re-analyse CV'; btn.disabled = false;
+}
+
+function renderCVResults(analysis) {
+  const area = document.getElementById('cvResultsArea');
+  if (!area) return;
+  const mk = arr => (arr||[]).map(x=>`<li>${esc(x)}</li>`).join('');
+  area.innerHTML = `<div class="cv-results">
+    <div class="cv-result-block">
+      <div class="cv-result-label">Overall fit</div>
+      <div class="cv-overall">${esc(analysis.overallFit||'')}</div>
+      ${analysis.headline ? `<div class="cv-result-label" style="margin-top:14px">Suggested headline</div><div class="cv-headline">"${esc(analysis.headline)}"</div>` : ''}
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      ${(analysis.strengths||[]).length ? `<div class="cv-result-block"><div class="cv-result-label">What's already strong</div><ul class="cv-list cv-strengths">${mk(analysis.strengths)}</ul></div>` : ''}
+      ${(analysis.gaps||[]).length ? `<div class="cv-result-block"><div class="cv-result-label">What's missing</div><ul class="cv-list cv-gaps">${mk(analysis.gaps)}</ul></div>` : ''}
+    </div>
+    ${(analysis.tweaks||[]).length ? `<div class="cv-result-block"><div class="cv-result-label">Specific tweaks to make</div><ul class="cv-list cv-tweaks">${mk(analysis.tweaks)}</ul></div>` : ''}
+  </div>`;
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  INTERVIEW PREP
+// ─────────────────────────────────────────────────────────────────
+let activePrepRoleId = null;
+let activeMockQuestion = null;
+let speechRec = null;
+let isRecording = false;
+let researchDebounce = null;
+const STORY_TAGS = ['Leadership','Analytics','Strategy','Cross-functional','GTM','B2B','Growth','Communication'];
+
+function onPrepRoleChange() {
+  const sel = document.getElementById('prepRoleSelect');
+  activePrepRoleId = sel?.value || null;
+  const empty = document.getElementById('prepEmpty');
+  const sections = document.getElementById('prepSections');
+  if (!activePrepRoleId) { empty.style.display = ''; sections.style.display = 'none'; return; }
+  empty.style.display = 'none'; sections.style.display = '';
+  const role = getTrackedRole(activePrepRoleId);
+  if (!role) return;
+  const ta = document.getElementById('companyResearchTextarea');
+  if (ta) ta.value = role.interviewPrep?.companyResearch || '';
+  renderStories(role);
+  const qs = role.interviewPrep?.questions;
+  if (qs && Object.keys(qs).length) renderQuestions(qs);
+  else document.getElementById('questionsContainer').innerHTML = '<p style="color:var(--text-muted);font-size:0.82rem">Click "Generate for this role" to create a tailored question bank.</p>';
+  document.getElementById('mockPracticeSection').style.display = 'none';
+}
+
+function autosavePrepField(field, value) {
+  clearTimeout(researchDebounce);
+  researchDebounce = setTimeout(() => {
+    const role = getTrackedRole(activePrepRoleId);
+    if (!role) return;
+    updateRoleInKV(activePrepRoleId, { interviewPrep: { ...role.interviewPrep, [field]: value } });
+  }, 1000);
+}
+
+function addStory() {
+  const role = getTrackedRole(activePrepRoleId);
+  if (!role) return;
+  const story = { id:'story_'+Date.now(), title:'New story', situation:'', task:'', action:'', result:'', tags:[] };
+  const prep = { ...role.interviewPrep, stories: [...(role.interviewPrep?.stories||[]), story] };
+  updateRoleInKV(activePrepRoleId, { interviewPrep: prep }).then(() => renderStories(getTrackedRole(activePrepRoleId)));
+}
+
+function renderStories(role) {
+  const c = document.getElementById('storiesContainer');
+  if (!c) return;
+  const stories = role?.interviewPrep?.stories || [];
+  if (!stories.length) { c.innerHTML = '<p style="color:var(--text-muted);font-size:0.82rem">No stories yet. Add your first STAR story.</p>'; return; }
+  c.innerHTML = stories.map(s => `
+    <div class="story-card" id="sc_${s.id}">
+      <div class="story-header">
+        <input type="text" class="story-title-input" value="${esc(s.title)}" onblur="updateStoryField('${s.id}','title',this.value)">
+        <button class="btn-secondary" style="font-size:0.7rem;padding:3px 8px" onclick="deleteStory('${s.id}')">✕</button>
+      </div>
+      ${['situation','task','action','result'].map(f=>`<div class="story-field"><label>${f}</label><textarea onblur="updateStoryField('${s.id}','${f}',this.value)">${esc(s[f]||'')}</textarea></div>`).join('')}
+      <div class="story-tags">${STORY_TAGS.map(t=>`<span class="story-tag-chip${(s.tags||[]).includes(t)?' active':''}" onclick="toggleStoryTag('${s.id}','${t}')">${t}</span>`).join('')}</div>
+    </div>`).join('');
+}
+
+async function updateStoryField(sid, field, value) {
+  const role = getTrackedRole(activePrepRoleId);
+  if (!role) return;
+  const stories = (role.interviewPrep?.stories||[]).map(s => s.id===sid ? {...s,[field]:value} : s);
+  await updateRoleInKV(activePrepRoleId, { interviewPrep: {...role.interviewPrep, stories} });
+}
+
+async function deleteStory(sid) {
+  const role = getTrackedRole(activePrepRoleId);
+  if (!role) return;
+  const stories = (role.interviewPrep?.stories||[]).filter(s => s.id !== sid);
+  await updateRoleInKV(activePrepRoleId, { interviewPrep: {...role.interviewPrep, stories} });
+  renderStories(getTrackedRole(activePrepRoleId));
+}
+
+async function toggleStoryTag(sid, tag) {
+  const role = getTrackedRole(activePrepRoleId);
+  if (!role) return;
+  const stories = (role.interviewPrep?.stories||[]).map(s => {
+    if (s.id !== sid) return s;
+    const tags = (s.tags||[]).includes(tag) ? s.tags.filter(t=>t!==tag) : [...(s.tags||[]),tag];
+    return {...s, tags};
+  });
+  await updateRoleInKV(activePrepRoleId, { interviewPrep: {...role.interviewPrep, stories} });
+  renderStories(getTrackedRole(activePrepRoleId));
+}
+
+async function generateQuestions() {
+  const role = getTrackedRole(activePrepRoleId);
+  if (!role) return;
+  const btn = document.getElementById('genQuestionsBtn');
+  btn.textContent = 'Generating…'; btn.disabled = true;
+  try {
+    const res = await fetch('/api/interview-prep', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ jobTitle: role.title, company: role.company, jobDescription: role.descriptionText }) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    await updateRoleInKV(activePrepRoleId, { interviewPrep: {...role.interviewPrep, questions: data} });
+    renderQuestions(data);
+  } catch (e) {
+    document.getElementById('questionsContainer').innerHTML = `<div class="ai-error">Failed: ${esc(e.message)}</div>`;
+  }
+  btn.textContent = 'Regenerate questions'; btn.disabled = false;
+}
+
+function renderQuestions(questions) {
+  const c = document.getElementById('questionsContainer');
+  if (!c) return;
+  const cats = [{key:'generic',label:'Behavioural / Motivational'},{key:'technical',label:'Technical / Domain'},{key:'strategic',label:'Strategic Thinking'}];
+  c.innerHTML = cats.map(cat => {
+    const qs = questions[cat.key] || [];
+    if (!qs.length) return '';
+    return `<div class="question-category"><div class="question-category-label">${cat.label}</div>${qs.map(q=>`
+      <div class="question-item"><span>${esc(q)}</span>
+        <button class="btn-secondary" onclick='startMockPractice(${JSON.stringify(q)})' style="font-size:0.7rem;padding:3px 10px">Practice →</button>
+      </div>`).join('')}</div>`;
+  }).join('');
+}
+
+function startMockPractice(q) {
+  activeMockQuestion = q;
+  document.getElementById('mockQuestion').textContent = q;
+  document.getElementById('mockAnswerTextarea').value = '';
+  document.getElementById('mockFeedbackArea').innerHTML = '';
+  document.getElementById('mockPracticeSection').style.display = '';
+  document.getElementById('mockPracticeSection').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function closeMockPractice() { document.getElementById('mockPracticeSection').style.display = 'none'; activeMockQuestion = null; }
+
+async function getMockFeedback() {
+  if (!activeMockQuestion || !activePrepRoleId) return;
+  const role = getTrackedRole(activePrepRoleId);
+  if (!role) return;
+  const answer = document.getElementById('mockAnswerTextarea')?.value?.trim();
+  if (!answer || answer.length < 20) { alert('Please write a more complete answer first.'); return; }
+  const fbArea = document.getElementById('mockFeedbackArea');
+  fbArea.innerHTML = '<div class="ai-loading" style="margin-top:14px"><div class="ai-spinner"></div>Getting feedback from Claude…</div>';
+  try {
+    const res = await fetch('/api/interview-prep', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'feedback', jobTitle:role.title, company:role.company,
+        jobDescription:role.descriptionText, question:activeMockQuestion, answer }) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    renderMockFeedback(data);
+    const logEntry = { question:activeMockQuestion, userAnswer:answer, feedback:data, at:new Date().toISOString() };
+    const prep = { ...role.interviewPrep, mockLog:[...(role.interviewPrep?.mockLog||[]).slice(-9), logEntry] };
+    updateRoleInKV(activePrepRoleId, { interviewPrep:prep });
+  } catch (e) { fbArea.innerHTML = `<div class="ai-error" style="margin-top:14px">Feedback unavailable: ${esc(e.message)}</div>`; }
+}
+
+function renderMockFeedback(fb) {
+  const area = document.getElementById('mockFeedbackArea');
+  if (!area) return;
+  const ratingColor = [,'var(--fit-low-text)','var(--fit-low-text)','var(--fit-mid-text)','var(--fit-high-text)','var(--fit-high-text)'][fb.rating] || 'var(--accent)';
+  const mk = arr => (arr||[]).map(x=>`<li>${esc(x)}</li>`).join('');
+  area.innerHTML = `<div class="mock-feedback">
+    <div class="mock-rating" style="color:${ratingColor}">
+      ${'★'.repeat(fb.rating||0)}${'☆'.repeat(5-(fb.rating||0))}
+      <span class="mock-rating-label">${esc(fb.ratingLabel||'')}</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px">
+      ${(fb.strong||[]).length ? `<div><div class="mock-feedback-label">What worked</div><ul class="mock-fb-list mock-strong">${mk(fb.strong)}</ul></div>` : ''}
+      ${(fb.missing||[]).length ? `<div><div class="mock-feedback-label">What's missing</div><ul class="mock-fb-list mock-missing">${mk(fb.missing)}</ul></div>` : ''}
+    </div>
+    ${fb.suggestedStructure ? `<div style="margin-top:14px"><div class="mock-feedback-label">How to structure it better</div><div style="font-size:0.82rem;color:var(--text-secondary);line-height:1.7;margin-top:5px">${esc(fb.suggestedStructure)}</div></div>` : ''}
+    ${fb.sampleOpener ? `<div class="mock-opener">"${esc(fb.sampleOpener)}"</div>` : ''}
+  </div>`;
+}
+
+function toggleVoiceRecording() {
+  if (isRecording) { if (speechRec) speechRec.stop(); return; }
+  if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) {
+    alert('Voice recording requires Chrome or Edge browser.'); return;
+  }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  speechRec = new SR();
+  speechRec.continuous = true; speechRec.interimResults = true; speechRec.lang = 'en-SG';
+  const btn = document.getElementById('voiceBtn');
+  const ta  = document.getElementById('mockAnswerTextarea');
+  let final = ta.value;
+  speechRec.onresult = e => {
+    let interim = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) final += ' ' + e.results[i][0].transcript;
+      else interim += e.results[i][0].transcript;
+    }
+    ta.value = (final + (interim ? ' ' + interim : '')).trim();
+  };
+  speechRec.onend = () => { isRecording = false; if (btn) { btn.textContent = '🎤 Record answer'; btn.classList.remove('recording'); } };
+  speechRec.onerror = () => { if (speechRec) speechRec.stop(); };
+  speechRec.start();
+  isRecording = true;
+  if (btn) { btn.textContent = '⏹ Stop recording'; btn.classList.add('recording'); }
+}
+
+// Sync KV on load
+syncFromKV();
 </script>
 </body>
 </html>
