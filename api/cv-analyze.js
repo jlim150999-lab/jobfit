@@ -1,4 +1,4 @@
-const MODEL = 'google/gemini-1.5-flash';
+const MODEL = 'meta-llama/llama-3.3-70b-instruct:free';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
