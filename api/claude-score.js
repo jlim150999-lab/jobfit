@@ -2,7 +2,7 @@
 //   "anthropic/claude-3-haiku"  — Claude Haiku (cheap, great quality)
 //   "google/gemini-flash-1.5"   — Gemini Flash (very cheap, ~$0.075/1M tokens)
 //   "meta-llama/llama-3.3-70b-instruct:free" — free tier
-const MODEL = 'google/gemini-flash-1.5';
+const MODEL = 'google/gemini-1.5-flash';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -67,7 +67,6 @@ Be honest and specific. Reference actual requirements from the JD and actual exp
           { role: 'system', content: systemPrompt },
           { role: 'user', content: `Job Title: ${jobTitle}\nCompany: ${company || 'Not specified'}\n\nJob Description:\n${jobDescription.slice(0, 6000)}` },
         ],
-        response_format: { type: 'json_object' },
       }),
     });
 

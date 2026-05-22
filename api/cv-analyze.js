@@ -1,4 +1,4 @@
-const MODEL = 'google/gemini-flash-1.5';
+const MODEL = 'google/gemini-1.5-flash';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -45,7 +45,6 @@ Be concrete and actionable — reference actual content from the CV and actual r
           { role: 'system', content: systemPrompt },
           { role: 'user', content: `TARGET ROLE: ${jobTitle} at ${company || 'company not specified'}\n\nJOB DESCRIPTION:\n${jobDescription.slice(0, 5000)}\n\n---\n\nMY CV:\n${cvText.slice(0, 8000)}` },
         ],
-        response_format: { type: 'json_object' },
       }),
     });
 

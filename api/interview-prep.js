@@ -1,4 +1,4 @@
-const MODEL = 'google/gemini-flash-1.5';
+const MODEL = 'google/gemini-1.5-flash';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -62,7 +62,6 @@ Make every question specific to this JD — reference actual responsibilities an
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userContent },
         ],
-        response_format: { type: 'json_object' },
       }),
     });
 
