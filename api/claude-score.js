@@ -72,6 +72,7 @@ Be honest and specific. Reference actual requirements from the JD and actual exp
 
     if (!response.ok) {
       const errText = await response.text();
+      console.error('OpenRouter error:', response.status, errText);
       return res.status(502).json({ error: `AI API error ${response.status}: ${errText}` });
     }
 
