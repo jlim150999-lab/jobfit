@@ -1,3 +1,9 @@
+// Model can be swapped to any OpenRouter model, e.g.:
+//   "anthropic/claude-3-haiku"  — Claude Haiku (cheap, great quality)
+//   "google/gemini-flash-1.5"   — Gemini Flash (very cheap, ~$0.075/1M tokens)
+//   "meta-llama/llama-3.3-70b-instruct:free" — free tier
+const MODEL = 'google/gemini-flash-1.5';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -6,8 +12,8 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'jobTitle and jobDescription are required' });
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) return res.status(500).json({ error: 'ANTHROPIC_API_KEY not configured' });
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) return res.status(500).json({ error: 'OPENROUTER_API_KEY not configured' });
 
   const NELLIE_PROFILE = `CANDIDATE — Nellie
 Current Role: Product Marketing Analyst, UPS Supply Chain Solutions (Oct 2024–present)
@@ -33,8 +39,8 @@ Given a job title and description, assess the candidate's fit. Return ONLY a val
   "summary": <2-3 sentences: honest assessment of overall fit, referencing specific role requirements and her background>,
   "strengths": [<2-4 concrete reasons this is a good fit — reference her actual experience, not generic statements>],
   "gaps": [<1-3 specific gaps or concerns — use empty array [] if there are genuinely none>],
-  "highlight": [<2-3 specific things she should lead with in a cover letter or application for THIS role — e.g. "Lead with your Power BI dashboard work at UPS to show data-driven marketing" — draw from her actual background>],
-  "tweak": [<1-3 specific reframes or things to address — e.g. "Reframe your UPS role as cross-functional stakeholder management, not logistics", "Don't over-emphasise supply chain context" — practical and honest>]
+  "highlight": [<2-3 specific things she should lead with in a cover letter or application for THIS role — draw from her actual background>],
+  "tweak": [<1-3 specific reframes or things to address — practical and honest>]
 }
 
 Scoring calibration:
@@ -47,45 +53,40 @@ Scoring calibration:
 Be honest and specific. Reference actual requirements from the JD and actual experience from her profile.`;
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
+        'Authorization': `Bearer ${apiKey}`,
+        'HTTP-Referer': 'https://jobfit-steel.vercel.app',
+        'X-Title': 'JobFit',
       },
       body: JSON.stringify({
-        model: 'claude-opus-4-7',
-        max_tokens: 1024,
-        thinking: { type: 'adaptive' },
-        system: systemPrompt,
-        messages: [{
-          role: 'user',
-          content: `Job Title: ${jobTitle}\nCompany: ${company || 'Not specified'}\n\nJob Description:\n${jobDescription.slice(0, 6000)}`,
-        }],
+        model: MODEL,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: `Job Title: ${jobTitle}\nCompany: ${company || 'Not specified'}\n\nJob Description:\n${jobDescription.slice(0, 6000)}` },
+        ],
+        response_format: { type: 'json_object' },
       }),
     });
 
     if (!response.ok) {
       const errText = await response.text();
-      return res.status(502).json({ error: `Claude API error ${response.status}: ${errText}` });
+      return res.status(502).json({ error: `AI API error ${response.status}: ${errText}` });
     }
 
     const data = await response.json();
-    const textBlock = data.content.find(b => b.type === 'text');
-    if (!textBlock) return res.status(502).json({ error: 'No text response from Claude' });
+    const content = data.choices?.[0]?.message?.content;
+    if (!content) return res.status(502).json({ error: 'No response from AI' });
 
     let result;
     try {
-      result = JSON.parse(textBlock.text.trim());
+      result = JSON.parse(content.trim());
     } catch {
-      // Fallback: extract JSON object if there's surrounding text
-      const match = textBlock.text.match(/\{[\s\S]*\}/);
-      if (match) {
-        result = JSON.parse(match[0]);
-      } else {
-        return res.status(502).json({ error: 'Failed to parse Claude response as JSON' });
-      }
+      const match = content.match(/\{[\s\S]*\}/);
+      if (match) result = JSON.parse(match[0]);
+      else return res.status(502).json({ error: 'Failed to parse AI response as JSON' });
     }
 
     res.setHeader('Cache-Control', 'no-store');
